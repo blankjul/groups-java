@@ -1,6 +1,5 @@
 package com.julzz.clique.group;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -17,33 +16,32 @@ public class GroupDescription {
 	protected int numOfPersonsInGroup;
 
 	//! all members that exist in the search space
-	protected Set<String> members = new HashSet<String>();
+	protected Set<Member> members = new HashSet<Member>();
 	
-	//! map of each member to be in a group with a set of others
-	protected Map<String,List<String>> preferenes = new HashMap<String,List<String>>();
-	
-	//! map of each member to rejected members 
-	protected Map<String,List<String>> rejections = new HashMap<String,List<String>>();
+	protected Map<String,Member> hash = new HashMap<>();
 	
 	//! hard constraint which constellation in one group is not allowed
 	protected Set<Set<String>> notInOneGroup = new HashSet<Set<String>>();
 
 	
 	public boolean addMember(String name) {
-		return members.add(name);
+		Member m = new Member(name);
+		hash.put(name, m);
+		return members.add(m);
 	}
 	
+	
 	public void addMember(List<String> names) {
-		members.addAll(names);
+		for (String n : names) members.add(new Member(n));
 	}
 	
 	
 	public void addPreference(String name, List<String> inGroupWith) {
-		preferenes.put(name, inGroupWith);
+		for(String other : inGroupWith) hash.get(name).addPreference(hash.get(other));
 	}
 	
 	public void addRejection(String name, List<String> notInGroupWith) {
-		rejections.put(name, notInGroupWith);
+		for(String other : notInGroupWith) hash.get(name).addRejection(hash.get(other));
 	}
 	
 	public boolean addForbiddenGroup(Set<String> forbidden) {
@@ -54,21 +52,13 @@ public class GroupDescription {
 		return notInOneGroup.add(new HashSet<String>(forbidden));
 	}
 	
-	public List<String> getPreferenceOf(String name) {
-		if (!preferenes.containsKey(name)) return new ArrayList<String>(0);
-		return preferenes.get(name);
-	}
-	
-	public List<String> getRejectionsOf(String name) {
-		if (!rejections.containsKey(name)) return new ArrayList<String>(0);
-		return rejections.get(name);
-	}
+
 	
 	public Set<Set<String>> getForbiddenGroupConstelation() {
 		return notInOneGroup;
 	}
 
-	public Set<String> getMembers() {
+	public Set<Member> getMembers() {
 		return members;
 	}
 

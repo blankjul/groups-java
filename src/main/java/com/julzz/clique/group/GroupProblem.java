@@ -32,20 +32,20 @@ public class GroupProblem extends ASingleObjectiveProblem<GroupVariable> {
 		double objective = 0;
 		double constraints = 0;
 
-		List<Set<String>> subgroups = var.getSubgroups(desc.getNumOfPersonsInGroup());
+		List<Set<Member>> subgroups = var.getSubgroups(desc.getNumOfPersonsInGroup());
 
-		for (Set<String> group : subgroups) {
+		for (Set<Member> group : subgroups) {
 
-			for (String name : group) {
+			for (Member member : group) {
 
 				// add points for found preferences
-				List<String> prefs = desc.getPreferenceOf(name);
+				List<Member> prefs = member.getPreferences();
 				for (int i = 0; i < prefs.size(); i++) {
 					if (group.contains(prefs.get(i))) objective -= Math.pow(0.9, i);
 				}
 				
 				// penalize rejections
-				List<String> rejs = desc.getRejectionsOf(name);
+				List<Member> rejs  = member.getRejections();
 				for (int i = 0; i < rejs.size(); i++) {
 					if (group.contains(rejs.get(i))) objective += Math.pow(0.9, i);
 				}
@@ -57,7 +57,7 @@ public class GroupProblem extends ASingleObjectiveProblem<GroupVariable> {
 		// check for hard constraints
 		for (Set<String> forbiddenInOneGroup : desc.notInOneGroup) {
 			boolean isViolated = false;
-			for (Set<String> group : subgroups) {
+			for (Set<Member> group : subgroups) {
 				if (group.containsAll(forbiddenInOneGroup)) {
 					isViolated = true;
 					break;

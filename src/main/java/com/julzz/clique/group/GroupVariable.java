@@ -16,21 +16,21 @@ import com.msu.model.variables.ListVariable;
  * subgroup size.
  *
  */
-public class GroupVariable extends ListVariable<String> {
+public class GroupVariable extends ListVariable<Member> {
 
-	public GroupVariable(List<String> names) {
+	public GroupVariable(List<Member> names) {
 		super(names);
 	}
 
-	public List<Set<String>> getSubgroups(int sizeOfGroups) {
-		List<Set<String>> result = new ArrayList<Set<String>>();
+	public List<Set<Member>> getSubgroups(int sizeOfGroups) {
+		List<Set<Member>> result = new ArrayList<Set<Member>>();
 
-		Set<String> current = new HashSet<String>();
+		Set<Member> current = new HashSet<Member>();
 		for (int i = 0; i < obj.size(); i++) {
 			current.add(obj.get(i));
 			if (current.size() == sizeOfGroups) {
 				result.add(current);
-				current = new HashSet<String>();
+				current = new HashSet<Member>();
 			}
 		}
 		if (!current.isEmpty())
@@ -40,13 +40,13 @@ public class GroupVariable extends ListVariable<String> {
 
 	@Override
 	public IVariable copy() {
-		return new GroupVariable(new ArrayList<String>(obj));
+		return new GroupVariable(new ArrayList<Member>(obj));
 	}
 
 	public String print(int n) {
 		StringBuilder sb = new StringBuilder();
 		int counter = 0;
-		for (Set<String> group : getSubgroups(n)) {
+		for (Set<Member> group : getSubgroups(n)) {
 			sb.append("Team " + ++counter + ": ");
 			sb.append(Arrays.toString(group.toArray()));
 			sb.append("\n");
@@ -55,7 +55,7 @@ public class GroupVariable extends ListVariable<String> {
 	}
 
 	@Override
-	public boolean isEqual(List<String> o1, List<String> o2) {
+	public boolean isEqual(List<Member> o1, List<Member> o2) {
 		return o1.equals(o2);
 	}
 
@@ -65,7 +65,7 @@ public class GroupVariable extends ListVariable<String> {
 	}
 
 	public String report(GroupDescription desc) {
-		List<Set<String>> subgroups = getSubgroups(desc.getNumOfPersonsInGroup());
+		List<Set<Member>> subgroups = getSubgroups(desc.getNumOfPersonsInGroup());
 		
 		int numOfPreferences = 0;
 		int numOfRejections = 0;
@@ -73,15 +73,15 @@ public class GroupVariable extends ListVariable<String> {
 		int allOfRejections = 0;
 		
 		StringBuilder sb = new StringBuilder();
-		for (Set<String> group : subgroups) {
+		for (Set<Member> group : subgroups) {
 
-			for (String name : group) {
+			for (Member name : group) {
 				sb.append("----------------------------------------\n");
 
 				sb.append(String.format("%s: \n\n", name));
 
-				if (!desc.getPreferenceOf(name).isEmpty()) sb.append(String.format("Preferences (x if fullflilled):  \n"));
-				for (String pref : desc.getPreferenceOf(name)) {
+				if (!name.getPreferences().isEmpty()) sb.append(String.format("Preferences (x if fullflilled):  \n"));
+				for (Member pref : name.getPreferences()) {
 					if (group.contains(pref)) {
 						sb.append(String.format("\tx %s\n", pref));
 						numOfPreferences++;
@@ -92,8 +92,8 @@ public class GroupVariable extends ListVariable<String> {
 				}
 
 				// penalize rejections
-				if (!desc.getRejectionsOf(name).isEmpty()) sb.append(String.format("Rejections (x if considered): \n"));
-				for (String rej : desc.getRejectionsOf(name)) {
+				if (!name.getRejections().isEmpty())  sb.append(String.format("Rejections (x if considered): \n"));
+				for (Member rej : name.getRejections()) {
 					if (group.contains(rej)) {
 						sb.append(String.format("\t  %s\n", rej));
 					} else {
@@ -114,7 +114,7 @@ public class GroupVariable extends ListVariable<String> {
 		// check for hard constraints
 		for (Set<String> forbiddenInOneGroup : desc.notInOneGroup) {
 			boolean isViolated = false;
-			for (Set<String> group : subgroups) {
+			for (Set<Member> group : subgroups) {
 				if (group.containsAll(forbiddenInOneGroup)) {
 					isViolated = true;
 					break;

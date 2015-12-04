@@ -14,7 +14,7 @@ public class GroupFactory extends AVariableFactory {
 
 	public IVariable next(IProblem problem, MyRandom rand) {
 		GroupProblem group = (GroupProblem) problem;
-		List<String> members = new ArrayList<String>(group.getDescription().getMembers());
+		List<Member> members = new ArrayList<Member>(group.getDescription().getMembers());
 		rand.shuffle(members);
 		return new GroupVariable(members);
 	}
