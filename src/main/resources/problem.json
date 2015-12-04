@@ -1,0 +1,34 @@
+{
+  "numOfPersonsInGroup": 3,
+  "members": [
+    "Alex",
+    "Max",
+    "Robert",
+    "Peter",
+    "Julian",
+    "Ali",
+    "Hannes"
+  ],
+  "preferenes": {
+    "Alex": [
+      "Peter",
+      "Julian"
+    ],
+    "Max": [
+      "Robert",
+      "Ali"
+    ]
+  },
+  "rejections": {
+    "Alex": [
+      "Robert",
+      "Ali"
+    ]
+  },
+  "notInOneGroup": [
+    [
+      "Robert",
+      "Julian"
+    ]
+  ]
+}
