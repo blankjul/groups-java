@@ -1,7 +1,9 @@
 package com.julzz.clique;
+
 import com.julzz.clique.group.GroupFactory;
-import com.julzz.clique.group.GroupProblem;
 import com.julzz.clique.group.GroupVariable;
+import com.julzz.clique.group.Problem;
+import com.julzz.clique.io.ProblemReader;
 import com.msu.builder.Builder;
 import com.msu.model.Evaluator;
 import com.msu.moo.model.solution.NonDominatedSolutionSet;
@@ -10,37 +12,50 @@ import com.msu.operators.mutation.SwapMutation;
 import com.msu.soo.SingleObjectiveEvolutionaryAlgorithm;
 import com.msu.util.MyRandom;
 
-public class GroupSolver {
+public class Solver {
 
 	public static void main(String[] args) {
-		
-		if (args.length !=1) {
+
+		if (args.length != 1) {
 			System.err.println("Please give a problem file as an argument!");
 			return;
 		}
 		
-	    GroupProblem problem = new GroupProblemReader().read(args[0]);
+		/*
+		 * 
+		ProblemBuilder b = new ProblemBuilder();
+		b.setNumOfPersonsInGroup(3);
+		b.addMember(Arrays.asList("Julian", "Peter", "Max", "Ali", "Robert", "Alex"));
+		b.addPreference("Alex", Arrays.asList("Julian", "Peter"));
+		b.addPreference("Max", Arrays.asList("Ali", "Peter"));
+		b.addRejection("Alex", Arrays.asList("Ali", "Robert"));
+		b.addForbiddenGroup(Arrays.asList("Max", "Julian"));
+		System.out.println(b);
+		GroupProblem problem = b.build();
 		
-		Builder<SingleObjectiveEvolutionaryAlgorithm> ea = 
-				new Builder<SingleObjectiveEvolutionaryAlgorithm>(SingleObjectiveEvolutionaryAlgorithm.class);
+		*/
+		
+		
+		Problem problem = new ProblemReader().read(args[0]);
+		
+		
+		Builder<SingleObjectiveEvolutionaryAlgorithm> ea = new Builder<SingleObjectiveEvolutionaryAlgorithm>(SingleObjectiveEvolutionaryAlgorithm.class);
 		ea
 			.set("populationSize", 100)
 			.set("probMutation", 0.3)
 			.set("factory", new GroupFactory())
-			.set("crossover", new OrderedCrossover<String>())
-			.set("mutation", new SwapMutation<String>());
-	
-		
+			.set("crossover", new OrderedCrossover<>())
+			.set("mutation", new SwapMutation<>());
+
 		NonDominatedSolutionSet set = ea.build().run(problem, new Evaluator(500000), new MyRandom());
-		
+
 		// System.out.println(set);
-		
+
 		GroupVariable var = (GroupVariable) set.get(0).getVariable();
 		System.out.println(var.report(problem.getDescription()));
 		System.out.println("----------------------------------------\n");
 		System.out.println(var.print(problem.getDescription().getNumOfPersonsInGroup()));
-		
-		
+
 	}
-	
+
 }

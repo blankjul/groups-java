@@ -1,33 +1,49 @@
 {
   "numOfPersonsInGroup": 3,
   "members": [
-    "Alex",
-    "Max",
-    "Robert",
-    "Peter",
-    "Julian",
-    "Ali",
-    "Hannes"
+    {
+      "name": "Julian",
+      "preferences": [],
+      "rejections": []
+    },
+    {
+      "name": "Peter",
+      "preferences": [],
+      "rejections": []
+    },
+    {
+      "name": "Max",
+      "preferences": [
+        "Ali",
+        "Peter"
+      ],
+      "rejections": []
+    },
+    {
+      "name": "Alex",
+      "preferences": [
+        "Julian",
+        "Peter"
+      ],
+      "rejections": [
+        "Ali",
+        "Robert"
+      ]
+    },
+    {
+      "name": "Ali",
+      "preferences": [],
+      "rejections": []
+    },
+    {
+      "name": "Robert",
+      "preferences": [],
+      "rejections": []
+    }
   ],
-  "preferenes": {
-    "Alex": [
-      "Peter",
-      "Julian"
-    ],
-    "Max": [
-      "Robert",
-      "Ali"
-    ]
-  },
-  "rejections": {
-    "Alex": [
-      "Robert",
-      "Ali"
-    ]
-  },
   "notInOneGroup": [
     [
-      "Robert",
+      "Max",
       "Julian"
     ]
   ]

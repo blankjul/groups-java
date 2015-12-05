@@ -13,7 +13,7 @@ import com.msu.util.MyRandom;
 public class GroupFactory extends AVariableFactory {
 
 	public IVariable next(IProblem problem, MyRandom rand) {
-		GroupProblem group = (GroupProblem) problem;
+		Problem group = (Problem) problem;
 		List<Member> members = new ArrayList<Member>(group.getDescription().getMembers());
 		rand.shuffle(members);
 		return new GroupVariable(members);

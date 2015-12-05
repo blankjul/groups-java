@@ -64,7 +64,7 @@ public class GroupVariable extends ListVariable<Member> {
 		return obj.hashCode();
 	}
 
-	public String report(GroupDescription desc) {
+	public String report(ProblemDescription desc) {
 		List<Set<Member>> subgroups = getSubgroups(desc.getNumOfPersonsInGroup());
 		
 		int numOfPreferences = 0;
@@ -112,7 +112,7 @@ public class GroupVariable extends ListVariable<Member> {
 		sb.append("----------------------------------------\n");
 		sb.append(String.format("Constraints (x if not in the same group): \n"));
 		// check for hard constraints
-		for (Set<String> forbiddenInOneGroup : desc.notInOneGroup) {
+		for (Set<Member> forbiddenInOneGroup : desc.notInOneGroup) {
 			boolean isViolated = false;
 			for (Set<Member> group : subgroups) {
 				if (group.containsAll(forbiddenInOneGroup)) {

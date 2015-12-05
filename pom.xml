@@ -61,7 +61,7 @@
 						</excludes>
 						<archive>
 							<manifest>
-								<mainClass>com.julzz.clique.GroupSolver</mainClass>
+								<mainClass>com.julzz.clique.Solver</mainClass>
 							</manifest>
 						</archive>
 					</configuration>
@@ -72,7 +72,7 @@
 					<configuration>
 						<archive>
 							<manifest>
-								<mainClass>com.julzz.clique.GroupSolver</mainClass>
+								<mainClass>com.julzz.clique.Solver</mainClass>
 							</manifest>
 						</archive>
 						<descriptorRefs>

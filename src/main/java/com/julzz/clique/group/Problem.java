@@ -6,12 +6,12 @@ import java.util.Set;
 import com.msu.soo.ASingleObjectiveProblem;
 import com.msu.util.exceptions.EvaluationException;
 
-public class GroupProblem extends ASingleObjectiveProblem<GroupVariable> {
+public class Problem extends ASingleObjectiveProblem<GroupVariable> {
 
 	// ! object that contains all the preferences, rejections and constrains
-	protected GroupDescription desc;
+	protected ProblemDescription desc;
 
-	public GroupProblem(GroupDescription desc) {
+	public Problem(ProblemDescription desc) {
 		super();
 		this.desc = desc;
 	}
@@ -39,23 +39,19 @@ public class GroupProblem extends ASingleObjectiveProblem<GroupVariable> {
 			for (Member member : group) {
 
 				// add points for found preferences
-				List<Member> prefs = member.getPreferences();
-				for (int i = 0; i < prefs.size(); i++) {
-					if (group.contains(prefs.get(i))) objective -= Math.pow(0.9, i);
-				}
+				int counter = 0;
+				for (Member other : group) if (member.prefers(other)) objective -= Math.pow(0.9, counter++);
 				
 				// penalize rejections
-				List<Member> rejs  = member.getRejections();
-				for (int i = 0; i < rejs.size(); i++) {
-					if (group.contains(rejs.get(i))) objective += Math.pow(0.9, i);
-				}
-
+				counter = 0;
+				for (Member other : group) if (member.rejects(other)) objective += Math.pow(0.9, counter++);
+				
 			}
 
 		}
 
 		// check for hard constraints
-		for (Set<String> forbiddenInOneGroup : desc.notInOneGroup) {
+		for (Set<Member> forbiddenInOneGroup : desc.notInOneGroup) {
 			boolean isViolated = false;
 			for (Set<Member> group : subgroups) {
 				if (group.containsAll(forbiddenInOneGroup)) {
@@ -71,7 +67,7 @@ public class GroupProblem extends ASingleObjectiveProblem<GroupVariable> {
 
 	}
 
-	public GroupDescription getDescription() {
+	public ProblemDescription getDescription() {
 		return desc;
 	}
 
