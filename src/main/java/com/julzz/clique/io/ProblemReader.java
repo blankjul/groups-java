@@ -16,6 +16,7 @@ public class ProblemReader extends AReader<Problem> {
 			Gson gson = new Gson();
 			ProblemBuilder b = gson.fromJson(br, ProblemBuilder.class);
 			return b.build();
+			
 		} catch (JsonSyntaxException e) {
 			System.err.println("Input file contains errors and could not be read!");
 			return null;

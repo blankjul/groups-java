@@ -22,14 +22,16 @@ public class GroupVariable extends ListVariable<Member> {
 		super(names);
 	}
 
-	public List<Set<Member>> getSubgroups(int sizeOfGroups) {
+	public List<Set<Member>> getSubgroups(List<Integer> groups) {
 		List<Set<Member>> result = new ArrayList<Set<Member>>();
 
 		Set<Member> current = new HashSet<Member>();
+		int counter = 0;
 		for (int i = 0; i < obj.size(); i++) {
 			current.add(obj.get(i));
-			if (current.size() == sizeOfGroups) {
+			if (current.size() == groups.get(counter)) {
 				result.add(current);
+				counter++;
 				current = new HashSet<Member>();
 			}
 		}
@@ -43,10 +45,10 @@ public class GroupVariable extends ListVariable<Member> {
 		return new GroupVariable(new ArrayList<Member>(obj));
 	}
 
-	public String print(int n) {
+	public String print(ProblemDescription desc) {
 		StringBuilder sb = new StringBuilder();
 		int counter = 0;
-		for (Set<Member> group : getSubgroups(n)) {
+		for (Set<Member> group : getSubgroups(desc.groupLimits)) {
 			sb.append("Team " + ++counter + ": ");
 			sb.append(Arrays.toString(group.toArray()));
 			sb.append("\n");
@@ -54,10 +56,6 @@ public class GroupVariable extends ListVariable<Member> {
 		return sb.toString();
 	}
 
-	@Override
-	public boolean isEqual(List<Member> o1, List<Member> o2) {
-		return o1.equals(o2);
-	}
 
 	@Override
 	public int hashCode() {
@@ -65,7 +63,7 @@ public class GroupVariable extends ListVariable<Member> {
 	}
 
 	public String report(ProblemDescription desc) {
-		List<Set<Member>> subgroups = getSubgroups(desc.getNumOfPersonsInGroup());
+		List<Set<Member>> subgroups = getSubgroups(desc.groupLimits);
 		
 		int numOfPreferences = 0;
 		int numOfRejections = 0;
@@ -126,6 +124,24 @@ public class GroupVariable extends ListVariable<Member> {
 				sb.append(String.format("\t  %s\n", forbiddenInOneGroup));
 			}
 		}
+		
+		sb.append(String.format("Constraints (x if in the same group): \n"));
+		// check for hard constraints
+		for (Set<Member> forcedGroup : desc.inOneGroup) {
+			boolean isPresent = false;
+			for (Set<Member> group : subgroups) {
+				if (group.containsAll(forcedGroup)) {
+					isPresent = true;
+					break;
+				}
+			}
+			if (isPresent) {
+				sb.append(String.format("\tx %s\n", forcedGroup));
+			} else {
+				sb.append(String.format("\t  %s\n", forcedGroup));
+			}
+		}
+
 		
 		sb.append("----------------------------------------\n");
 		sb.append(String.format("Preferences fullfilled: %s / %s\n", numOfPreferences, allPreferences));

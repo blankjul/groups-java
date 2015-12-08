@@ -47,14 +47,19 @@ public class Solver {
 			.set("crossover", new OrderedCrossover<>())
 			.set("mutation", new SwapMutation<>());
 
-		NonDominatedSolutionSet set = ea.build().run(problem, new Evaluator(500000), new MyRandom());
+		NonDominatedSolutionSet set = ea.build().run(problem, new Evaluator(3000000), new MyRandom());
 
 		// System.out.println(set);
 
+		if (set.getSolutions().isEmpty()) {
+			System.err.println("No Solution found.");
+			return;
+		}
+		
 		GroupVariable var = (GroupVariable) set.get(0).getVariable();
 		System.out.println(var.report(problem.getDescription()));
 		System.out.println("----------------------------------------\n");
-		System.out.println(var.print(problem.getDescription().getNumOfPersonsInGroup()));
+		System.out.println(var.print(problem.getDescription()));
 
 	}
 
