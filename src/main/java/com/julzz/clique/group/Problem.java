@@ -1,12 +1,15 @@
 package com.julzz.clique.group;
 
+import java.util.Collection;
+import java.util.DoubleSummaryStatistics;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
-import com.msu.soo.ASingleObjectiveProblem;
+import com.msu.model.AProblem;
 import com.msu.util.exceptions.EvaluationException;
 
-public class Problem extends ASingleObjectiveProblem<GroupVariable> {
+public class Problem extends AProblem<GroupVariable> {
 
 	// ! object that contains all the preferences, rejections and constrains
 	protected ProblemDescription desc;
@@ -20,6 +23,12 @@ public class Problem extends ASingleObjectiveProblem<GroupVariable> {
 	public int getNumberOfConstraints() {
 		return 1;
 	}
+	
+	@Override
+	public int getNumberOfObjectives() {
+		return 1;
+	}
+
 
 	@Override
 	protected void evaluate_(GroupVariable var, List<Double> objectives, List<Double> constraintViolations) {
@@ -29,71 +38,37 @@ public class Problem extends ASingleObjectiveProblem<GroupVariable> {
 					String.format("Unable to evaluate. Size of Variable %s, but size of all members %s.", var.size(),
 							desc.getNumOfPersonsInGroup()));
 
-		
-		double objective = 0;
-		double constraints = 0;
-
-		List<Set<Member>> subgroups = var.getSubgroups(desc.groupLimits);
-
-		for (Set<Member> group : subgroups) {
-
-			for (Member member : group) {
-
-				// add points for found preferences
-				double max = 0;
-				for (int i = 0; i < member.getPreferences().size(); i++) max += Math.pow(0.9, i);
-				int counter = 0;
-				int value = 0;
-				for (Member other : group) if (member.prefers(other)) value += Math.pow(0.9, counter++);
-				
-				objective -= value / max;
-				
-				// penalize rejections
-				max = 0;
-				for (int i = 0; i < member.getRejections().size(); i++) max += Math.pow(0.9, i);
-				counter = 0;
-				value = 0;
-				for (Member other : group) if (member.rejects(other)) value += Math.pow(0.9, counter++);
-				
-				objective += value / max;
-				
-			}
-
-		}
+		// all subgroups created from the decoded List
+		Collection<Set<Member>> subgroups = var.getSubgroups();
 
 		// check for hard constraints
-		for (Set<Member> forbiddenInOneGroup : desc.notInOneGroup) {
-			boolean isViolated = false;
-			for (Set<Member> group : subgroups) {
-				if (group.containsAll(forbiddenInOneGroup)) {
-					isViolated = true;
-					break;
-				}
-			}
-			if (isViolated) constraints++;
+		int violatedIsInGroup = desc.inOneGroup.size() - ProblemUtil.calcPresentSubsetGroups(subgroups, desc.inOneGroup);
+		int violatedNotInGroup = ProblemUtil.calcPresentSubsetGroups(subgroups, desc.notInOneGroup);
+		constraintViolations.add((double) violatedIsInGroup + violatedNotInGroup);
+		
+		// calculate preferences and rejections of each member
+		Map<Member, Integer> prefs = ProblemUtil.calcPresentPreferences(subgroups);
+		Map<Member, Integer> rejs = ProblemUtil.calcConsideredRejections(subgroups);
+
+		// calculate the individual satisfaction of each member
+		DoubleSummaryStatistics statistics = new DoubleSummaryStatistics();
+		for (Member m : desc.members) {
+			double satisfaction = prefs.get(m) + rejs.get(m);
+			statistics.accept(satisfaction);		
 		}
 		
-		// check for hard constraints 
-		for (Set<Member> forcedGroup : desc.inOneGroup) {
-			boolean isPresent = false;
-			for (Set<Member> group : subgroups) {
-				if (group.containsAll(forcedGroup)) {
-					isPresent = true;
-					break;
-				}
-			}
-			if (!isPresent) constraints++;
-		}
-
-		constraintViolations.add(constraints);
-		objectives.add(objective);
-
+		objectives.add(-statistics.getSum());
+		//objectives.add(-statistics.getMin());
+		
 	}
 	
+	
+
 	
 
 	public ProblemDescription getDescription() {
 		return desc;
 	}
+
 
 }

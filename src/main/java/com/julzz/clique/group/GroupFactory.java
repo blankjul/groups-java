@@ -16,7 +16,7 @@ public class GroupFactory extends AVariableFactory {
 		Problem group = (Problem) problem;
 		List<Member> members = new ArrayList<Member>(group.getDescription().getMembers());
 		rand.shuffle(members);
-		return new GroupVariable(members);
+		return new GroupVariable(group.desc, members);
 	}
 
 }

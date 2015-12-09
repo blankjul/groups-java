@@ -2,6 +2,7 @@ package com.julzz.clique.group;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -18,37 +19,47 @@ import com.msu.model.variables.ListVariable;
  */
 public class GroupVariable extends ListVariable<Member> {
 
-	public GroupVariable(List<Member> names) {
+	//! problem description of the variable
+	protected ProblemDescription desc;
+	
+	//! encoded as subgroups
+	protected Collection<Set<Member>> subgroups;
+	
+	public GroupVariable(ProblemDescription desc, List<Member> names) {
 		super(names);
+		this.desc = desc;
 	}
 
-	public List<Set<Member>> getSubgroups(List<Integer> groups) {
-		List<Set<Member>> result = new ArrayList<Set<Member>>();
-
-		Set<Member> current = new HashSet<Member>();
-		int counter = 0;
-		for (int i = 0; i < obj.size(); i++) {
-			current.add(obj.get(i));
-			if (current.size() == groups.get(counter)) {
-				result.add(current);
-				counter++;
-				current = new HashSet<Member>();
+	public Collection<Set<Member>> getSubgroups() {
+		
+		if (subgroups == null) {
+			subgroups = new HashSet<>();
+			Set<Member> current = new HashSet<Member>();
+			int counter = 0;
+			for (int i = 0; i < obj.size(); i++) {
+				current.add(obj.get(i));
+				if (current.size() == desc.groupLimits.get(counter)) {
+					subgroups.add(current);
+					counter++;
+					current = new HashSet<Member>();
+				}
 			}
+			if (!current.isEmpty())
+				subgroups.add(current);
 		}
-		if (!current.isEmpty())
-			result.add(current);
-		return result;
+		
+		return subgroups;
 	}
 
 	@Override
 	public IVariable copy() {
-		return new GroupVariable(new ArrayList<Member>(obj));
+		return new GroupVariable(desc, new ArrayList<Member>(obj));
 	}
 
-	public String print(ProblemDescription desc) {
+	public String print() {
 		StringBuilder sb = new StringBuilder();
 		int counter = 0;
-		for (Set<Member> group : getSubgroups(desc.groupLimits)) {
+		for (Set<Member> group : getSubgroups()) {
 			sb.append("Team " + ++counter + ": ");
 			sb.append(Arrays.toString(group.toArray()));
 			sb.append("\n");
@@ -57,13 +68,28 @@ public class GroupVariable extends ListVariable<Member> {
 	}
 
 
+	
+	
 	@Override
-	public int hashCode() {
-		return obj.hashCode();
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		GroupVariable other = (GroupVariable) obj;
+		return getSubgroups().equals(other.getSubgroups());
 	}
 
-	public String report(ProblemDescription desc) {
-		List<Set<Member>> subgroups = getSubgroups(desc.groupLimits);
+	@Override
+	public int hashCode() {
+		return getSubgroups().hashCode();
+	}
+
+	
+	public String report() {
+		Collection<Set<Member>> subgroups = getSubgroups();
 		
 		int numOfPreferences = 0;
 		int numOfRejections = 0;

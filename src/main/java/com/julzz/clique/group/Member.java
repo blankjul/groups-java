@@ -1,8 +1,6 @@
 package com.julzz.clique.group;
 
-import java.util.ArrayList;
 import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -46,12 +44,12 @@ public class Member {
 		return false;
 	}
 
-	public List<Member> getPreferences() {
-		return new ArrayList<>(preferences);
+	public Set<Member> getPreferences() {
+		return preferences;
 	}
 
-	public List<Member> getRejections() {
-		return new ArrayList<>(rejections);
+	public Set<Member> getRejections() {
+		return rejections;
 	}
 
 	@Override
