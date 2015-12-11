@@ -1,5 +1,5 @@
 {
-  "groupLimits": [4,4,4,4],
+  "groupLimits": [4,4,4,5],
   "members": [
     {
       "name": "Kevin Schw.",
@@ -17,14 +17,19 @@
       "rejections": ["Tobias Tr.", "Jonas H."]
     },
     {
+      "name": "Stefan Kr.",
+      "preferences": ["Sven R.", "Jürgis P.", "Berat K."],
+      "rejections": ["Yannik H.", "Tobias Tr."]
+    },
+    {
       "name": "Dennis Kr.",
-      "preferences": ["Sven R.", "Bünjamin E.","Jürgis P.", "Justin Sw.", "Steven R."],
+      "preferences": ["Sven R.", "Stefan Kr.", "Bünjamin E.","Jürgis P.", "Justin Sw.", "Steven R."],
       "rejections": ["Max Schn.", "Tobias Tr."]
     },
     {
       "name": "Yannik H.",
       "preferences": ["Sven R.", "Dennis H.", "Max Schn.","Konstantin"],
-      "rejections": ["Justin Sw."]
+      "rejections": ["Stefan Kr.", "Justin Sw."]
     },
     {
       "name": "Bünjamin E.",
@@ -48,7 +53,7 @@
     },
     {
       "name": "Berat K.",
-      "preferences": ["Sven R.", "Dennis H.", "Justin Sw.", "Steven R."],
+      "preferences": ["Sven R.", "Stefan Kr.", "Dennis H.", "Justin Sw.", "Steven R."],
       "rejections": ["Jürgis P.", "René S."]
     },
     {
@@ -64,7 +69,7 @@
     {
       "name": "René S.",
       "preferences": ["Bünjamin E.", "Dennis H.", "Tobias Tr."],
-      "rejections": ["Berat K."]
+      "rejections": ["Stefan Kr.", "Berat K."]
     },
     {
       "name": "Steven R.",

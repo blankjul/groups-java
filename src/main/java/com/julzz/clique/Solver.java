@@ -65,9 +65,10 @@ public class Solver {
 		*/
 		
 		GroupVariable var = (GroupVariable) set.get(0).getVariable();
+		System.out.println();
+		System.out.println(var.print());
 		System.out.println(var.report());
 		System.out.println("----------------------------------------\n");
-		System.out.println(var.print());
 
 	}
 
