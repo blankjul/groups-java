@@ -1,4 +1,4 @@
-package com.julzz.clique.group;
+package com.julzz.groups.model;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -51,21 +51,6 @@ public class Member {
 	public Set<Member> getRejections() {
 		return rejections;
 	}
-
-	@Override
-	public int hashCode() {
-		return name.hashCode();
-	}
-
-	@Override
-	public boolean equals(Object other){
-	    if (other == null) return false;
-	    if (other == this) return true;
-	    if (!(other instanceof Member))return false;
-	    Member otherMyClass = (Member)other;
-	    return name.equals(otherMyClass.name);
-	}
-	
 
 	@Override
 	public String toString() {

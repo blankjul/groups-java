@@ -1,4 +1,4 @@
-package com.julzz.clique.io;
+package com.julzz.groups.io;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,9 +12,9 @@ import java.util.Set;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
-import com.julzz.clique.group.Member;
-import com.julzz.clique.group.Problem;
-import com.julzz.clique.group.ProblemDescription;
+import com.julzz.groups.model.Member;
+import com.julzz.groups.model.Problem;
+import com.julzz.groups.model.ProblemDescription;
 
 /**
  * This class defines the problem and could be read or parsed from a file.

@@ -1,4 +1,4 @@
-package com.julzz.clique.group;
+package com.julzz.groups.model;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -69,25 +69,25 @@ public class GroupVariable extends ListVariable<Member> {
 
 
 	
-	
+
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (!super.equals(obj))
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
 		GroupVariable other = (GroupVariable) obj;
-		return getSubgroups().equals(other.getSubgroups());
+		return hashCode() == other.hashCode();
 	}
 
 	@Override
 	public int hashCode() {
-		return getSubgroups().hashCode();
+		final int prime = 31;
+		int result = 0;
+		for (Set<Member> members : getSubgroups()) {
+			result = prime * result + members.hashCode();
+		}
+		return result;
 	}
 
-	
+
+
 	public String report() {
 		Collection<Set<Member>> subgroups = getSubgroups();
 		

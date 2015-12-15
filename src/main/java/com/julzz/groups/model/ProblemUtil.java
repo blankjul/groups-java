@@ -1,4 +1,4 @@
-package com.julzz.clique.group;
+package com.julzz.groups.model;
 
 import java.util.Collection;
 import java.util.HashMap;

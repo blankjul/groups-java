@@ -1,11 +1,11 @@
-package com.julzz.clique.io;
+package com.julzz.groups.io;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
-import com.julzz.clique.group.Problem;
+import com.julzz.groups.model.Problem;
 import com.msu.util.io.AReader;
 
 public class ProblemReader extends AReader<Problem> {
