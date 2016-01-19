@@ -2,21 +2,32 @@ package com.julzz.groups.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.msu.interfaces.IProblem;
-import com.msu.interfaces.IVariable;
-import com.msu.model.AVariableFactory;
-import com.msu.util.MyRandom;
+import com.msu.moo.interfaces.IFactory;
+import com.msu.moo.util.MyRandom;
 
 /**
  * This class creates random group constellations in the beginning. It simply shuffles a list.
  */
-public class GroupFactory extends AVariableFactory {
+public class GroupFactory implements IFactory<GroupVariable> {
 
-	public IVariable next(IProblem problem, MyRandom rand) {
-		Problem group = (Problem) problem;
-		List<Member> members = new ArrayList<Member>(group.getDescription().getMembers());
+	protected Problem problem;
+	
+	
+	public GroupFactory(Problem problem) {
+		super();
+		this.problem = problem;
+	}
+
+	@Override
+	public GroupVariable next(MyRandom rand) {
+		List<Member> members = new ArrayList<Member>(problem.getDescription().getMembers());
 		rand.shuffle(members);
-		return new GroupVariable(group.desc, members);
+		return new GroupVariable(problem.desc, members);
+	}
+
+	@Override
+	public boolean hasNext() {
+		return true;
 	}
 
 }

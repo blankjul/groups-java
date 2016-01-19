@@ -6,10 +6,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.msu.model.AProblem;
-import com.msu.util.exceptions.EvaluationException;
+import com.msu.moo.model.ASingleObjectiveProblem;
+import com.msu.moo.util.exceptions.EvaluationException;
 
-public class Problem extends AProblem<GroupVariable> {
+public class Problem extends ASingleObjectiveProblem<GroupVariable> {
 
 	// ! object that contains all the preferences, rejections and constrains
 	protected ProblemDescription desc;
@@ -24,18 +24,14 @@ public class Problem extends AProblem<GroupVariable> {
 		return 1;
 	}
 	
-	@Override
-	public int getNumberOfObjectives() {
-		return 1;
-	}
 
 
 	@Override
 	protected void evaluate_(GroupVariable var, List<Double> objectives, List<Double> constraintViolations) {
 
-		if (var.size() != desc.numOfMembers())
+		if (var.decode().size() != desc.numOfMembers())
 			throw new EvaluationException(
-					String.format("Unable to evaluate. Size of Variable %s, but size of all members %s.", var.size(),
+					String.format("Unable to evaluate. Size of Variable %s, but size of all members %s.", var.decode().size(),
 							desc.getNumOfPersonsInGroup()));
 
 		// all subgroups created from the decoded List

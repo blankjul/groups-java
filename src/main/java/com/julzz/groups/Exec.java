@@ -27,23 +27,29 @@ public class Exec {
 		options.addOption(Option.builder("nameOfFile")
 				.required(false)
 				.hasArg()
-				.desc("If the output should be printed to file, provide here the path where the solutions shuold be saved.")
+				.desc("If the output should be printed to a file, provide here the path where the solutions should be saved.")
 				.build());
 
 		options.addOption(Option.builder("numberOfSolutions")
 				.required(false)
 				.hasArg()
-				.desc("Number of solutions that showed be present when the algorithm is finished. Could not be higher than numberOfPopulation.")
+				.desc("Number of solutions that should be present when the algorithm is finished. Could not be higher than numberOfPopulation.")
 				.build());
 		
 		options.addOption(Option.builder("numberOfPopulation").required(false)
 				.hasArg()
-				.desc("Evoluationary algorithms use a population for their optimization process. This sets the number of inividuals for each generation")
+				.desc("Evolutionary algorithms use a population for their optimization process. This determines the number of inividuals for each generation. DEFAULT:100")
 				.build());
 		
-		options.addOption("noDescription", false, "If set the description of each solution is not printed. This is an overview which preferences and rejections are fullfilled.");
 		
-
+		options.addOption(Option.builder("maxEvaluations").required(false)
+				.hasArg()
+				.desc("Maximal number of evaluations. DEFAULT: 100000")
+				.build());
+		
+		options.addOption("noDescription", false, "If set as argument, the description of each solution is not printed. This is an overview which preferences and rejections are fulfilled.");
+		
+		
 		// create the parser
 		CommandLineParser parser = new DefaultParser();
 		CommandLine cmd = null;
@@ -72,10 +78,14 @@ public class Exec {
 			solver.populationSize = Integer.valueOf(cmd.getOptionValue("numberOfPopulation"));
 		}
 		
+		if (cmd.hasOption("maxEvaluations")) {
+			solver.maxEvaluations = Integer.valueOf(cmd.getOptionValue("maxEvaluations"));
+		}
+		
 		final boolean printDescription = !cmd.hasOption("noDescription");
 		
 		
-		SolutionSet set = solver.execute();
+		SolutionSet<GroupVariable> set = solver.execute();
 		OutputStream os = (cmd.hasOption("nameOfFile")) ? new FileOutputStream(new File(cmd.getOptionValue("nameOfFile"))) : System.out;
 		PrintWriter pw = new PrintWriter(os);
 		
@@ -85,7 +95,7 @@ public class Exec {
 			pw.println("-----------------------------------------------------------------------------");
 			pw.println(String.format("Solution %s", i+1));
 			pw.println("-----------------------------------------------------------------------------");
-			GroupVariable var = (GroupVariable) set.get(i).getVariable();
+			GroupVariable var = set.get(i).getVariable();
 			pw.println(var.print());
 			if (printDescription) pw.println(var.report());
 		}

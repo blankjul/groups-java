@@ -1,5 +1,3 @@
-import static org.junit.Assert.*;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,7 +7,7 @@ import com.julzz.groups.io.ProblemReader;
 import com.julzz.groups.model.GroupVariable;
 import com.julzz.groups.model.Member;
 import com.julzz.groups.model.Problem;
-import com.msu.util.Util;
+import com.msu.moo.util.Util;
 
 import junit.framework.TestCase;
 

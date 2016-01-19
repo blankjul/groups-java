@@ -7,8 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.msu.interfaces.IVariable;
-import com.msu.model.variables.ListVariable;
+import com.msu.moo.model.variable.Variable;
 
 /**
  * This is the group variable which defines a variable for the given problem.
@@ -17,7 +16,7 @@ import com.msu.model.variables.ListVariable;
  * subgroup size.
  *
  */
-public class GroupVariable extends ListVariable<Member> {
+public class GroupVariable extends Variable<List<Member>> {
 
 	//! problem description of the variable
 	protected ProblemDescription desc;
@@ -52,7 +51,7 @@ public class GroupVariable extends ListVariable<Member> {
 	}
 
 	@Override
-	public IVariable copy() {
+	public Variable<List<Member>> copy() {
 		return new GroupVariable(desc, new ArrayList<Member>(obj));
 	}
 
@@ -104,7 +103,7 @@ public class GroupVariable extends ListVariable<Member> {
 
 				sb.append(String.format("%s: \n\n", name));
 
-				if (!name.getPreferences().isEmpty()) sb.append(String.format("Preferences (x if fullflilled):  \n"));
+				if (!name.getPreferences().isEmpty()) sb.append(String.format("Preferences (x if fulflilled):  \n"));
 				for (Member pref : name.getPreferences()) {
 					if (group.contains(pref)) {
 						sb.append(String.format("\tx %s\n", pref));
@@ -170,7 +169,7 @@ public class GroupVariable extends ListVariable<Member> {
 
 		
 		sb.append("----------------------------------------\n");
-		sb.append(String.format("Preferences fullfilled: %s / %s\n", numOfPreferences, allPreferences));
+		sb.append(String.format("Preferences fulfilled: %s / %s\n", numOfPreferences, allPreferences));
 		sb.append(String.format("Rejections considered: %s / %s\n", numOfRejections, allOfRejections));
 
 		return sb.toString();
