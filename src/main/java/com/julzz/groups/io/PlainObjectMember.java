@@ -23,6 +23,22 @@ public class PlainObjectMember {
 		super();
 		this.name = name;
 	}
+        
+        public String getName() {
+            return name;
+        }
+
+    public Set<String> getPreferences() {
+        return preferences;
+    }
+
+    public Set<String> getRejections() {
+        return rejections;
+    }
+
+    
+        
+        
 
 
 

@@ -29,13 +29,13 @@ public class ProblemBuilder {
 	protected Set<PlainObjectMember> members = new HashSet<>();
 
 	// ! hard constraint which constellation in one group is not allowed
-	protected Set<Set<String>> notInOneGroup = new HashSet<Set<String>>();
+	protected Set<Set<String>> notInOneGroup = new HashSet<>();
 
 	// ! hard constraint which constellation in one group is allowed
-	protected Set<Set<String>> inOneGroup = new HashSet<Set<String>>();
+	protected Set<Set<String>> inOneGroup = new HashSet<>();
 	
 	// ! map of each member to be in a group with a set of others
-	private Map<String, PlainObjectMember> hash = new HashMap<String, PlainObjectMember>();
+	private Map<String, PlainObjectMember> hash = new HashMap<>();
 
 	
 	public boolean addMember(String name) {
@@ -60,8 +60,12 @@ public class ProblemBuilder {
 			addMember(n); 
 		}
 	}
+        
+        public boolean containsMember(String name) {
+            return hash.containsKey(name);
+        }
 	
-	private PlainObjectMember getMember(String name) {
+	public PlainObjectMember getMember(String name) {
 		if (!hash.containsKey(name)) memberNotFound(name);
 		return hash.get(name);
 	}
@@ -164,5 +168,29 @@ public class ProblemBuilder {
 	private void memberNotFoundButAdded(String name, String added) throws RuntimeException{
 		throw new RuntimeException(String.format("Member %s not found, but added either as preference or rejection to %s.", name, added));
 	}
+        
+        
+        public Set<PlainObjectMember> getMembers() {
+            return members;
+        }
+
+        
+        public Set<Set<String>> getForbiddenGroups() {
+            return notInOneGroup;
+        }
+        
+        public Set<Set<String>> getForcedGroups() {
+            return inOneGroup;
+        }
+        
+        public Set<String> getPreferencesOf(String name) {
+            return hash.get(name).preferences;
+        }
+        
+        public Set<String> getRejectionsOf(String name) {
+            return hash.get(name).rejections;
+        }
+        
+        
 
 }

@@ -37,7 +37,7 @@ public class Solver {
 
 		SingleObjectiveEvolutionaryAlgorithm<GroupVariable, Problem> algorithm = ea.build();
 		algorithm.run(problem, new StandardEvaluator(maxEvaluations), new MyRandom());
-		return algorithm.getFinalPopulation();
+                return algorithm.getPopulation();
 	}
 	
 	
