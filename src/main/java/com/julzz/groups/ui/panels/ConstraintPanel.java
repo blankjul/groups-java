@@ -166,7 +166,8 @@ public class ConstraintPanel extends AbstractPanel {
 
     @Override
     public void save() {
-        super.save(); //To change body of generated methods, choose Tools | Templates.
+        super.save(); 
+        tblClass.clearSelection();
     }
 
     @Override
@@ -178,6 +179,8 @@ public class ConstraintPanel extends AbstractPanel {
         for(PlainObjectMember m : Storage.bProblem.getMembers()) {
             model.addRow(new Object[] {m.getName()});
         }
+        
+        updateGroups();
         
         
     }

@@ -96,8 +96,8 @@ public class Exec {
 			pw.println(String.format("Solution %s", i+1));
 			pw.println("-----------------------------------------------------------------------------");
 			GroupVariable var = set.get(i).getVariable();
-			pw.println(var.print());
-			if (printDescription) pw.println(var.report());
+			//pw.println(var.print());
+			//if (printDescription) pw.println(var.report());
 		}
 		pw.println();
 		pw.close();

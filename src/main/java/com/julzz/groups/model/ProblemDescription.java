@@ -31,10 +31,15 @@ public class ProblemDescription {
 		this.inOneGroup = inOneGroup;
 	}
 
-	public Set<Set<Member>> getForbiddenGroupConstelation() {
+	public Set<Set<Member>> getNotInGroup() {
 		return notInOneGroup;
 	}
+        
+        public Set<Set<Member>> getInGroup() {
+		return inOneGroup;
+	}
 
+        
 	public Set<Member> getMembers() {
 		return members;
 	}
@@ -46,5 +51,9 @@ public class ProblemDescription {
 	public int numOfMembers() {
 		return members.size();
 	}
+        
+        public List<Integer> getGroupLimits() {
+            return groupLimits;
+        }
 	
 }

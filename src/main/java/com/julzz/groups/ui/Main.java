@@ -5,22 +5,25 @@
  */
 package com.julzz.groups.ui;
 
+import com.julzz.groups.io.ProblemReader;
+import com.julzz.groups.io.ProblemWriter;
 import com.julzz.groups.ui.panels.AlgorithmPanel;
 import com.julzz.groups.ui.panels.NamePanel;
 import com.julzz.groups.ui.panels.ConstraintPanel;
 import com.julzz.groups.ui.panels.RelationPanel;
-import com.julzz.groups.ui.panels.ResultPanel;
+import com.julzz.groups.ui.panels.ResultPane;
 import java.awt.BorderLayout;
+import java.io.File;
 import java.util.Arrays;
 import java.util.List;
+import javax.swing.JFileChooser;
 
 
 public class Main extends javax.swing.JFrame {
 
     
-    final private List<AbstractPanel> panels = Arrays.asList(
-            new NamePanel(), new ConstraintPanel(), new RelationPanel() ,
-            new AlgorithmPanel(), new ResultPanel());
+    final private List<AbstractPanel> panels = Arrays.asList(new NamePanel(), new ConstraintPanel(), new RelationPanel() ,
+            new AlgorithmPanel(), new ResultPane());
     
     private int panelIdx = 0;
     
@@ -30,10 +33,8 @@ public class Main extends javax.swing.JFrame {
     public Main() {
         initComponents();
         
-        Storage.bProblem.addMember(Arrays.asList("Steffen", "Felix", "Manuel", "Frank"));
-        Storage.bProblem.setGroupLimits(Arrays.asList(2,2));
-        
-        
+        Storage.bProblem = new ProblemReader().read("/home/julesy/december2015.json");
+
         getContentPane().setLayout(new BorderLayout());
         loadPanel(startPanel);
         updateButtons();
@@ -45,9 +46,12 @@ public class Main extends javax.swing.JFrame {
      }
     
     
+    private void reloadPanel() {
+        loadPanel(panelIdx);
+    }
+     
     private void loadPanel(int idx) {
         panels.get(idx).initialize();
-        lblStep.setText(panels.get(idx).getName());
         getContentPane().add(panels.get(idx));
         this.getContentPane().invalidate();
         this.getContentPane().validate();
@@ -65,7 +69,12 @@ public class Main extends javax.swing.JFrame {
 
         btnNext = new javax.swing.JToggleButton();
         btnLast = new javax.swing.JToggleButton();
-        lblStep = new javax.swing.JLabel();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenu1 = new javax.swing.JMenu();
+        mImport = new javax.swing.JMenuItem();
+        mSave = new javax.swing.JMenuItem();
+        mClose = new javax.swing.JMenuItem();
+        jMenu2 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -83,7 +92,33 @@ public class Main extends javax.swing.JFrame {
             }
         });
 
-        lblStep.setText("Schritt");
+        jMenu1.setText("Datei");
+
+        mImport.setText("Import");
+        mImport.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mImportActionPerformed(evt);
+            }
+        });
+        jMenu1.add(mImport);
+
+        mSave.setText("Speichern");
+        mSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mSaveActionPerformed(evt);
+            }
+        });
+        jMenu1.add(mSave);
+
+        mClose.setText("Beenden");
+        jMenu1.add(mClose);
+
+        jMenuBar1.add(jMenu1);
+
+        jMenu2.setText("About");
+        jMenuBar1.add(jMenu2);
+
+        setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -95,17 +130,11 @@ public class Main extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnNext)
                 .addGap(28, 28, 28))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(28, 28, 28)
-                .addComponent(lblStep)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lblStep)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 392, Short.MAX_VALUE)
+                .addContainerGap(400, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnNext)
                     .addComponent(btnLast))
@@ -150,6 +179,25 @@ public class Main extends javax.swing.JFrame {
         setFocusableWindowState(false);
     }//GEN-LAST:event_btnLastActionPerformed
 
+    private void mImportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mImportActionPerformed
+        final JFileChooser fc = new JFileChooser();
+        int returnVal = fc.showOpenDialog(this);
+
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            File file = fc.getSelectedFile();
+            Storage.bProblem = new ProblemReader().read(file.getAbsolutePath());
+            reloadPanel();
+        }
+    }//GEN-LAST:event_mImportActionPerformed
+
+    private void mSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mSaveActionPerformed
+        JFileChooser fileChooser = new JFileChooser();
+        if (fileChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
+          File file = fileChooser.getSelectedFile();
+          new ProblemWriter().write(Storage.bProblem, file.getAbsolutePath());
+        }
+    }//GEN-LAST:event_mSaveActionPerformed
+
     
     /**
      * @param args the command line arguments
@@ -189,6 +237,11 @@ public class Main extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JToggleButton btnLast;
     private javax.swing.JToggleButton btnNext;
-    private javax.swing.JLabel lblStep;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem mClose;
+    private javax.swing.JMenuItem mImport;
+    private javax.swing.JMenuItem mSave;
     // End of variables declaration//GEN-END:variables
 }

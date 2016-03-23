@@ -29,6 +29,18 @@ public class RelationPanel extends AbstractPanel {
      */
     public RelationPanel() {
         initComponents();
+     
+        tblClass.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+            public void valueChanged(ListSelectionEvent event) {
+
+                if (tblClass.getSelectedRow() > 0) {
+                    final String name = tblClass.getValueAt(tblClass.getSelectedRow(), 0).toString();
+                    updateRelations(name);
+                }
+                
+            }
+        });
+        
     }
     
     @Override
@@ -39,14 +51,16 @@ public class RelationPanel extends AbstractPanel {
             model.addRow(new Object[] {m.getName()});
         }
         
-        tblClass.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-            public void valueChanged(ListSelectionEvent event) {
-                final String name = tblClass.getValueAt(tblClass.getSelectedRow(), 0).toString();
-                updateRelations(name);
-            }
-        });
-        
+  
     }
+
+    @Override
+    public void save() {
+        super.save(); 
+        tblClass.clearSelection();
+
+    }
+    
     
     
      private void updateRelations(String student) {
@@ -140,6 +154,7 @@ public class RelationPanel extends AbstractPanel {
                 return canEdit [columnIndex];
             }
         });
+        tblClass.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane3.setViewportView(tblClass);
 
         tblRelation.setModel(new javax.swing.table.DefaultTableModel(

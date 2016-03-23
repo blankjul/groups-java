@@ -5,6 +5,7 @@
  */
 package com.julzz.groups.ui.panels;
 
+import com.julzz.groups.io.ProblemWriter;
 import com.julzz.groups.model.GroupFactory;
 import com.julzz.groups.model.GroupVariable;
 import com.julzz.groups.model.Problem;
@@ -34,6 +35,8 @@ public class AlgorithmPanel extends AbstractPanel {
         
         Problem p = Storage.bProblem.build();
         
+     
+        
         Builder<SingleObjectiveEvolutionaryAlgorithm<GroupVariable, Problem>> ea = new Builder<>(SingleObjectiveEvolutionaryAlgorithm.class);
         ea
                 .set("populationSize", Storage.population)
@@ -46,22 +49,8 @@ public class AlgorithmPanel extends AbstractPanel {
         
          algorithm.run(p, new StandardEvaluator(Storage.evaluations), new MyRandom());
          Storage.result = algorithm.getPopulation();
-        
-        Thread t = new Thread(() -> {
-            
-        });
-        
-        t.start();
 
-        try {
-            t.join();
-        } catch (InterruptedException ex) {
-            Logger.getLogger(AlgorithmPanel.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        System.out.print("Test");
-        
-        
+         
         
     }
     

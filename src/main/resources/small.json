@@ -1,0 +1,30 @@
+{
+  "groupLimits": [
+    2,
+    2
+  ],
+  "members": [
+    {
+      "name": "Manuel",
+      "preferences": [],
+      "rejections": []
+    },
+    {
+      "name": "Steffen",
+      "preferences": [],
+      "rejections": []
+    },
+    {
+      "name": "Felix",
+      "preferences": [],
+      "rejections": []
+    },
+    {
+      "name": "Frank",
+      "preferences": [],
+      "rejections": []
+    }
+  ],
+  "notInOneGroup": [],
+  "inOneGroup": []
+}

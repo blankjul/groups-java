@@ -9,11 +9,15 @@ import com.julzz.groups.io.PlainObjectMember;
 import com.julzz.groups.ui.AbstractPanel;
 import com.julzz.groups.ui.Storage;
 import com.julzz.groups.ui.Util;
+import java.awt.GridLayout;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import javax.swing.JFormattedTextField;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.text.NumberFormatter;
 
 
 public class NamePanel extends AbstractPanel {
@@ -21,6 +25,8 @@ public class NamePanel extends AbstractPanel {
   
     public NamePanel() {
         initComponents();
+        
+        
     }
 
     /**
@@ -38,9 +44,7 @@ public class NamePanel extends AbstractPanel {
         btnRemove = new javax.swing.JButton();
 
         setMaximumSize(null);
-        setMinimumSize(null);
         setName(""); // NOI18N
-        setPreferredSize(null);
 
         tblClass.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -76,7 +80,7 @@ public class NamePanel extends AbstractPanel {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(395, Short.MAX_VALUE)
+                .addContainerGap(406, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(btnRemove, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnAdd, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -85,7 +89,7 @@ public class NamePanel extends AbstractPanel {
                 .addGroup(layout.createSequentialGroup()
                     .addGap(21, 21, 21)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 357, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(95, Short.MAX_VALUE)))
+                    .addContainerGap(106, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -94,12 +98,12 @@ public class NamePanel extends AbstractPanel {
                 .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnRemove)
-                .addContainerGap(134, Short.MAX_VALUE))
+                .addContainerGap(133, Short.MAX_VALUE))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addGap(16, 16, 16)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(30, Short.MAX_VALUE)))
+                    .addContainerGap(29, Short.MAX_VALUE)))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -123,7 +127,8 @@ public class NamePanel extends AbstractPanel {
         for(PlainObjectMember m : Storage.bProblem.getMembers()) {
             model.addRow(new Object[] {m.getName()});
         }
-        
+    
+  
     }
 
 

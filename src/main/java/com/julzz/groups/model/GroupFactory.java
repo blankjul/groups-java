@@ -22,7 +22,7 @@ public class GroupFactory implements IFactory<GroupVariable> {
 	public GroupVariable next(MyRandom rand) {
 		List<Member> members = new ArrayList<Member>(problem.getDescription().getMembers());
 		rand.shuffle(members);
-		return new GroupVariable(problem.desc, members);
+		return new GroupVariable(members);
 	}
 
 	@Override

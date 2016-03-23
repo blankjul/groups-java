@@ -51,6 +51,10 @@ public class Member {
 	public Set<Member> getRejections() {
 		return rejections;
 	}
+        
+        public String getName() {
+            return name;
+        }
 
 	@Override
 	public String toString() {

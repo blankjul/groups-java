@@ -35,7 +35,7 @@ public class Problem extends ASingleObjectiveProblem<GroupVariable> {
 							desc.getNumOfPersonsInGroup()));
 
 		// all subgroups created from the decoded List
-		Collection<Set<Member>> subgroups = var.getSubgroups();
+		Collection<Set<Member>> subgroups = ProblemUtil.getSubgroups(desc.groupLimits, var);
 
 		// check for hard constraints
 		int violatedIsInGroup = desc.inOneGroup.size() - ProblemUtil.calcPresentSubsetGroups(subgroups, desc.inOneGroup);
@@ -43,13 +43,15 @@ public class Problem extends ASingleObjectiveProblem<GroupVariable> {
 		constraintViolations.add((double) violatedIsInGroup + violatedNotInGroup);
 		
 		// calculate preferences and rejections of each member
-		Map<Member, Integer> prefs = ProblemUtil.calcPresentPreferences(subgroups);
-		Map<Member, Integer> rejs = ProblemUtil.calcConsideredRejections(subgroups);
+		Map<String, Integer> prefs = ProblemUtil.calcPresentPreferences(subgroups);
+		Map<String, Integer> rejs = ProblemUtil.calcConsideredRejections(subgroups);
 
 		// calculate the individual satisfaction of each member
 		DoubleSummaryStatistics statistics = new DoubleSummaryStatistics();
 		for (Member m : desc.members) {
-			double satisfaction = prefs.get(m) + rejs.get(m);
+			double dPref = (prefs.containsKey(m.name)) ? prefs.get(m.name)  : 0;
+			double dRej = (rejs.containsKey(m.name)) ? rejs.get(m.name)  : 0;
+			double satisfaction = dPref + dRej;
 			statistics.accept(satisfaction);		
 		}
 		
