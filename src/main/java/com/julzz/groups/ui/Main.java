@@ -121,7 +121,8 @@ public class Main extends javax.swing.JFrame {
 
         jMenu1.setText("Datei");
 
-        mImport.setText("Import");
+        mImport.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
+        mImport.setText("Öffnen");
         mImport.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 mImportActionPerformed(evt);
@@ -129,6 +130,7 @@ public class Main extends javax.swing.JFrame {
         });
         jMenu1.add(mImport);
 
+        mSave.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
         mSave.setText("Speichern");
         mSave.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -138,6 +140,11 @@ public class Main extends javax.swing.JFrame {
         jMenu1.add(mSave);
 
         mClose.setText("Beenden");
+        mClose.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mCloseActionPerformed(evt);
+            }
+        });
         jMenu1.add(mClose);
 
         jMenuBar1.add(jMenu1);
@@ -226,6 +233,10 @@ public class Main extends javax.swing.JFrame {
             new ProblemWriter().write(new Problem(Storage.desc), file.getAbsolutePath());
         }
     }//GEN-LAST:event_mSaveActionPerformed
+
+    private void mCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mCloseActionPerformed
+        System.exit(0);
+    }//GEN-LAST:event_mCloseActionPerformed
 
     /**
      * @param args the command line arguments

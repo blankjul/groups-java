@@ -5,6 +5,7 @@
  */
 package com.julzz.groups.ui.panels;
 
+import com.julzz.groups.model.Member;
 import com.julzz.groups.ui.AbstractPanel;
 import com.julzz.groups.ui.Storage;
 import java.util.ArrayList;
@@ -78,22 +79,21 @@ public class GroupPanel extends AbstractPanel {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(31, 31, 31)
+                .addContainerGap()
                 .addComponent(ScrollPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 363, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(33, 33, 33)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(btnAdd, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnRemove, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(47, Short.MAX_VALUE))
+                .addContainerGap(81, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(13, Short.MAX_VALUE)
-                .addComponent(ScrollPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 291, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
             .addGroup(layout.createSequentialGroup()
-                .addGap(114, 114, 114)
+                .addComponent(ScrollPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 291, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 25, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(106, 106, 106)
                 .addComponent(btnAdd)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnRemove)
@@ -112,6 +112,8 @@ public class GroupPanel extends AbstractPanel {
 
         final int sum = Storage.desc.getGroupLimits().stream().mapToInt(i -> i.intValue()).sum();
         model.addRow(new Object[]{"Nicht zugeteilt", Storage.desc.getMembers().size() - sum});
+        
+        
 
     }
 
@@ -119,8 +121,17 @@ public class GroupPanel extends AbstractPanel {
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
         String strNum = JOptionPane.showInputDialog(new JFrame(), "Gruppe:");
         if (strNum != null) {
-            int num = Integer.valueOf(strNum);
-            Storage.desc.getGroupLimits().add(num);
+
+            if (strNum.contains(",")) {
+                for (String s : strNum.split(",")) {
+                    int num = Integer.valueOf(s);
+                    Storage.desc.getGroupLimits().add(num);
+                }
+            } else {
+                int num = Integer.valueOf(strNum);
+                Storage.desc.getGroupLimits().add(num);
+            }
+
             update();
         }
     }//GEN-LAST:event_btnAddActionPerformed
@@ -129,7 +140,9 @@ public class GroupPanel extends AbstractPanel {
 
         int[] idx = tblGroups.getSelectedRows();
         for (int i = idx.length - 1; i >= 0; i--) {
-            Storage.desc.getGroupLimits().remove(i);
+            if (idx[i] < Storage.desc.getGroupLimits().size()) {
+                Storage.desc.getGroupLimits().remove(idx[i]);
+            }
         }
         update();
     }//GEN-LAST:event_btnRemoveActionPerformed
