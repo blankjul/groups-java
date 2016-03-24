@@ -5,11 +5,10 @@
  */
 package com.julzz.groups.ui.panels;
 
-import com.julzz.groups.io.PlainObjectMember;
+import com.julzz.groups.model.Member;
 import com.julzz.groups.ui.AbstractPanel;
 import com.julzz.groups.ui.Storage;
 import com.julzz.groups.ui.Util;
-import java.util.Collection;
 import java.util.Set;
 import javax.swing.table.DefaultTableModel;
 
@@ -21,6 +20,7 @@ public class ConstraintPanel extends AbstractPanel {
      */
     public ConstraintPanel() {
         initComponents();
+        update();
     }
 
     /**
@@ -32,34 +32,16 @@ public class ConstraintPanel extends AbstractPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jScrollPane2 = new javax.swing.JScrollPane();
-        tblClass = new javax.swing.JTable();
         jScrollPane3 = new javax.swing.JScrollPane();
         tblGroups = new javax.swing.JTable();
         btnInGroup = new javax.swing.JButton();
         btnNotInGroup = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tblClass = new com.julzz.groups.ui.components.NameTable();
 
         setMaximumSize(new java.awt.Dimension(473, 313));
         setMinimumSize(new java.awt.Dimension(473, 313));
         setName(""); // NOI18N
-
-        tblClass.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "Name"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        jScrollPane2.setViewportView(tblClass);
 
         tblGroups.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -95,110 +77,74 @@ public class ConstraintPanel extends AbstractPanel {
             }
         });
 
+        jScrollPane2.setViewportView(tblClass);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 638, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnInGroup, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnNotInGroup, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap(209, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(390, Short.MAX_VALUE))))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
-                    .addGap(31, 31, 31)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                        .addComponent(btnInGroup, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnNotInGroup, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGap(47, 47, 47)
+                    .addGap(271, 271, 271)
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 308, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(31, Short.MAX_VALUE)))
+                    .addContainerGap(59, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 460, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(13, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(26, 26, 26)
+                .addComponent(btnInGroup)
+                .addGap(8, 8, 8)
+                .addComponent(btnNotInGroup)
+                .addContainerGap())
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addContainerGap()
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGap(27, 27, 27)
-                    .addComponent(btnInGroup, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(18, 18, 18)
-                    .addComponent(btnNotInGroup, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(32, Short.MAX_VALUE)))
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(101, Short.MAX_VALUE)))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnInGroupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInGroupActionPerformed
 
-        Collection<String> group = Util.getSelected(tblClass);
-        Storage.bProblem.addForcedGroup(group);
+        Set<Member> group = tblClass.getSelected();
+        Storage.desc.getInGroup().add(group);
         tblClass.clearSelection();
-        updateGroups();
+        update();
     }//GEN-LAST:event_btnInGroupActionPerformed
 
     private void btnNotInGroupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNotInGroupActionPerformed
-        Collection<String> group = Util.getSelected(tblClass);
-        Storage.bProblem.addForbiddenGroup(group);
+        Set<Member> group = tblClass.getSelected();
+        Storage.desc.getInGroup().add(group);
         tblClass.clearSelection();
-        updateGroups();
+        update();
     }//GEN-LAST:event_btnNotInGroupActionPerformed
 
 
-    private void btnRemoveActionPerformed(java.awt.event.ActionEvent evt) {                                          
-        DefaultTableModel model = (DefaultTableModel) tblGroups.getModel();
-
-        int[] selected = tblGroups.getSelectedRows();
-
-        for (int idx : selected) {
-            final boolean forced = (boolean) model.getValueAt(idx, 1);
-            final Set<String> group = (Set<String>) model.getValueAt(idx, 2);
-            
-            if (forced) {
-                Storage.bProblem.getForcedGroups().remove(group);
-            } else {
-                Storage.bProblem.getForbiddenGroups().remove(group);
-            }
-        }
-
-        updateGroups();
-
-    }               
-
-    @Override
-    public void save() {
-        super.save(); 
-        tblClass.clearSelection();
-    }
-
-    @Override
-    public void initialize() {
-        super.initialize(); 
-        
-        DefaultTableModel model = (DefaultTableModel) tblClass.getModel();
-        model.getDataVector().removeAllElements();
-        for(PlainObjectMember m : Storage.bProblem.getMembers()) {
-            model.addRow(new Object[] {m.getName()});
-        }
-        
-        updateGroups();
-        
-        
-    }
     
-    
-
-  
-    
-    private void updateGroups() {
+    private void update() {
         DefaultTableModel model = (DefaultTableModel) tblGroups.getModel();
         for (int i = model.getRowCount() - 1; i >= 0; i--) {
            model.removeRow(i);
         }
-        for (Set<String> group : Storage.bProblem.getForcedGroups()) {
+        for (Set<Member> group : Storage.desc.getInGroup()) {
             final String line = "IN: " + Util.join(group, " | ");
             model.addRow(new Object[] {line, true, group});
         }
-        for (Set<String> group : Storage.bProblem.getForbiddenGroups()) {
+        for (Set<Member> group : Storage.desc.getNotInGroup()) {
             final String line = "NICHT IN: " + Util.join(group, " | ");
             model.addRow(new Object[] {line, false, group});
         }
@@ -210,7 +156,7 @@ public class ConstraintPanel extends AbstractPanel {
     private javax.swing.JButton btnNotInGroup;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTable tblClass;
+    private com.julzz.groups.ui.components.NameTable tblClass;
     private javax.swing.JTable tblGroups;
     // End of variables declaration//GEN-END:variables
 }

@@ -7,52 +7,63 @@ package com.julzz.groups.ui;
 
 import com.julzz.groups.io.ProblemReader;
 import com.julzz.groups.io.ProblemWriter;
+import com.julzz.groups.model.Problem;
 import com.julzz.groups.ui.panels.AlgorithmPanel;
-import com.julzz.groups.ui.panels.NamePanel;
 import com.julzz.groups.ui.panels.ConstraintPanel;
 import com.julzz.groups.ui.panels.RelationPanel;
 import com.julzz.groups.ui.panels.ResultPane;
+import com.julzz.groups.ui.panels.NamePanel;
 import java.awt.BorderLayout;
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFileChooser;
-
 
 public class Main extends javax.swing.JFrame {
 
-    
-    final private List<AbstractPanel> panels = Arrays.asList(new NamePanel(), new ConstraintPanel(), new RelationPanel() ,
-            new AlgorithmPanel(), new ResultPane());
-    
-    private int panelIdx = 0;
-    
+    final private List<Class<?>> cPanels = Arrays.asList(NamePanel.class, ConstraintPanel.class, RelationPanel.class,
+            AlgorithmPanel.class, ResultPane.class);
+
     private final int startPanel = 0;
+
     
- 
+    private int currentIdx = 0;
+    private AbstractPanel currentPanel = null;
+    
+
     public Main() {
         initComponents();
-        
-        Storage.bProblem = new ProblemReader().read("/home/julesy/december2015.json");
 
-        getContentPane().setLayout(new BorderLayout());
+        //Storage.bProblem = new ProblemReader().read("/home/julesy/december2015.json");
+        Storage.desc = new ProblemReader().read("/home/julesy/december2015.json").build().getDescription();
+        
+        setLayout(new BorderLayout());
+        pnlContainer.setLayout(new BorderLayout());
+
         loadPanel(startPanel);
+
         updateButtons();
     }
-    
-     private void removeCurrentPanel() {
-        panels.get(panelIdx).save();
-        getContentPane().remove(panels.get(panelIdx));
-     }
-    
-    
-    private void reloadPanel() {
-        loadPanel(panelIdx);
+
+    private AbstractPanel buildPanel(int idx) {
+        try {
+            return (AbstractPanel) cPanels.get(idx).getConstructor().newInstance();
+        } catch (NoSuchMethodException | SecurityException | InstantiationException |
+                IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
-     
+
+
     private void loadPanel(int idx) {
-        panels.get(idx).initialize();
-        getContentPane().add(panels.get(idx));
+        pnlContainer.removeAll();
+        currentPanel = buildPanel(idx);
+        pnlContainer.add(currentPanel);
+
         this.getContentPane().invalidate();
         this.getContentPane().validate();
         this.getContentPane().repaint();
@@ -69,6 +80,7 @@ public class Main extends javax.swing.JFrame {
 
         btnNext = new javax.swing.JToggleButton();
         btnLast = new javax.swing.JToggleButton();
+        pnlContainer = new javax.swing.JPanel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         mImport = new javax.swing.JMenuItem();
@@ -91,6 +103,20 @@ public class Main extends javax.swing.JFrame {
                 btnLastActionPerformed(evt);
             }
         });
+
+        pnlContainer.setMaximumSize(new java.awt.Dimension(654, 408));
+        pnlContainer.setMinimumSize(new java.awt.Dimension(654, 408));
+
+        javax.swing.GroupLayout pnlContainerLayout = new javax.swing.GroupLayout(pnlContainer);
+        pnlContainer.setLayout(pnlContainerLayout);
+        pnlContainerLayout.setHorizontalGroup(
+            pnlContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 654, Short.MAX_VALUE)
+        );
+        pnlContainerLayout.setVerticalGroup(
+            pnlContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 408, Short.MAX_VALUE)
+        );
 
         jMenu1.setText("Datei");
 
@@ -115,7 +141,7 @@ public class Main extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu1);
 
-        jMenu2.setText("About");
+        jMenu2.setText("Über");
         jMenuBar1.add(jMenu2);
 
         setJMenuBar(jMenuBar1);
@@ -125,16 +151,22 @@ public class Main extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(548, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnLast)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnNext)
                 .addGap(28, 28, 28))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(39, 39, 39)
+                .addComponent(pnlContainer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(57, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(400, Short.MAX_VALUE)
+                .addGap(32, 32, 32)
+                .addComponent(pnlContainer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnNext)
                     .addComponent(btnLast))
@@ -145,13 +177,12 @@ public class Main extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    
     private void updateButtons() {
-        
-        if (panelIdx == 0) {
+
+        if (currentIdx == 0) {
             btnLast.setEnabled(false);
             btnNext.setEnabled(true);
-        } else if (panelIdx == panels.size() - 1) { 
+        } else if (currentIdx == cPanels.size() - 1) {
             btnNext.setEnabled(false);
             btnLast.setEnabled(true);
         } else {
@@ -159,24 +190,21 @@ public class Main extends javax.swing.JFrame {
             btnNext.setEnabled(true);
         }
     }
-    
-    
+
+
     private void btnNextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNextActionPerformed
-        panels.get(panelIdx).save();
-        removeCurrentPanel();
-        panelIdx++;
-        loadPanel(panelIdx);
+        currentPanel.save();
+        currentIdx++;
+        loadPanel(currentIdx);
         updateButtons();
-        setFocusableWindowState(false);
     }//GEN-LAST:event_btnNextActionPerformed
 
+
     private void btnLastActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLastActionPerformed
-        panels.get(panelIdx).save();
-        removeCurrentPanel();
-        panelIdx--;
-        loadPanel(panelIdx);
+        currentPanel.save();
+        currentIdx--;
+        loadPanel(currentIdx);
         updateButtons();
-        setFocusableWindowState(false);
     }//GEN-LAST:event_btnLastActionPerformed
 
     private void mImportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mImportActionPerformed
@@ -185,20 +213,19 @@ public class Main extends javax.swing.JFrame {
 
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File file = fc.getSelectedFile();
-            Storage.bProblem = new ProblemReader().read(file.getAbsolutePath());
-            reloadPanel();
+            Storage.desc = new ProblemReader().read(file.getAbsolutePath()).build().getDescription();
+            loadPanel(currentIdx);
         }
     }//GEN-LAST:event_mImportActionPerformed
 
     private void mSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mSaveActionPerformed
         JFileChooser fileChooser = new JFileChooser();
         if (fileChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
-          File file = fileChooser.getSelectedFile();
-          new ProblemWriter().write(Storage.bProblem, file.getAbsolutePath());
+            File file = fileChooser.getSelectedFile();
+            new ProblemWriter().write(new Problem(Storage.desc), file.getAbsolutePath());
         }
     }//GEN-LAST:event_mSaveActionPerformed
 
-    
     /**
      * @param args the command line arguments
      */
@@ -243,5 +270,6 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JMenuItem mClose;
     private javax.swing.JMenuItem mImport;
     private javax.swing.JMenuItem mSave;
+    private javax.swing.JPanel pnlContainer;
     // End of variables declaration//GEN-END:variables
 }

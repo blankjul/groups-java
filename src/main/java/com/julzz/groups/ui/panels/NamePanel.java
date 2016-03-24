@@ -5,28 +5,24 @@
  */
 package com.julzz.groups.ui.panels;
 
-import com.julzz.groups.io.PlainObjectMember;
+import com.julzz.groups.model.Member;
 import com.julzz.groups.ui.AbstractPanel;
 import com.julzz.groups.ui.Storage;
-import com.julzz.groups.ui.Util;
-import java.awt.GridLayout;
-import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import javax.swing.JFormattedTextField;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.text.NumberFormatter;
 
-
+/**
+ *
+ * @author julesy
+ */
 public class NamePanel extends AbstractPanel {
 
   
     public NamePanel() {
         initComponents();
-        
-        
     }
 
     /**
@@ -38,28 +34,14 @@ public class NamePanel extends AbstractPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jScrollPane2 = new javax.swing.JScrollPane();
-        tblClass = new javax.swing.JTable();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblClass = new com.julzz.groups.ui.components.NameTable();
         btnAdd = new javax.swing.JButton();
         btnRemove = new javax.swing.JButton();
 
-        setMaximumSize(null);
-        setName(""); // NOI18N
-
-        tblClass.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "Name"
-            }
-        ));
-        jScrollPane2.setViewportView(tblClass);
+        jScrollPane1.setViewportView(tblClass);
 
         btnAdd.setText("+");
-        btnAdd.setToolTipText("");
-        btnAdd.setActionCommand("");
-        btnAdd.setPreferredSize(new java.awt.Dimension(50, 29));
         btnAdd.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAddActionPerformed(evt);
@@ -67,8 +49,6 @@ public class NamePanel extends AbstractPanel {
         });
 
         btnRemove.setText("-");
-        btnRemove.setToolTipText("");
-        btnRemove.setActionCommand("");
         btnRemove.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnRemoveActionPerformed(evt);
@@ -79,89 +59,61 @@ public class NamePanel extends AbstractPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(406, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(27, 27, 27)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(btnRemove, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnAdd, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(20, 20, 20))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(21, 21, 21)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 357, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(106, Short.MAX_VALUE)))
+                    .addComponent(btnAdd, javax.swing.GroupLayout.DEFAULT_SIZE, 44, Short.MAX_VALUE)
+                    .addComponent(btnRemove, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(73, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(109, 109, 109)
-                .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnRemove)
-                .addContainerGap(133, Short.MAX_VALUE))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(16, 16, 16)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(29, Short.MAX_VALUE)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(114, 114, 114)
+                        .addComponent(btnAdd)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnRemove))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(52, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
-        DefaultTableModel model = (DefaultTableModel) tblClass.getModel();
-        model.addRow(new Object[1]);
+        String name = JOptionPane.showInputDialog(new JFrame(), "Name:");
+        if (name != null) {
+            List<Member> members = new ArrayList<>();
+            if (name.contains(",")) {
+                for(String s : name.split(",")) {
+                    Storage.desc.getMembers().add(new Member(s.trim()));
+                }
+            } else {
+                Storage.desc.getMembers().add(new Member(name));
+            }
+
+            tblClass.update();
+        }
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void btnRemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveActionPerformed
-        DefaultTableModel model = (DefaultTableModel) tblClass.getModel();
-        int numRows = tblClass.getSelectedRows().length;
-        for (int i = 0; i < numRows; i++) {
-            model.removeRow(tblClass.getSelectedRow());
-        }
+        Storage.desc.getMembers().removeAll(tblClass.getSelected());
+        tblClass.update();
     }//GEN-LAST:event_btnRemoveActionPerformed
 
-    @Override
-    public void initialize() {
-        DefaultTableModel model = (DefaultTableModel) tblClass.getModel();
-        model.getDataVector().removeAllElements();
-        for(PlainObjectMember m : Storage.bProblem.getMembers()) {
-            model.addRow(new Object[] {m.getName()});
-        }
     
   
-    }
-
-
     
-    @Override
-    public void save() {
-        
-        Set<String> names = new HashSet<>(Util.getAllFromTable(tblClass, 0));
-        
-        // remove all which were deleted
-        List<PlainObjectMember> membersToRemove = new ArrayList<>();
-        for (PlainObjectMember m : Storage.bProblem.getMembers()) {
-            if (!names.contains(m.getName())) membersToRemove.add(m);
-        }
-        Storage.bProblem.getMembers().removeAll(membersToRemove);
-        
-        // add all members which were added
-        for(String name : Util.getAllFromTable(tblClass, 0)) {
-            if (Storage.bProblem.containsMember(name)) continue;
-            else Storage.bProblem.addMember(name);
    
-        }
-
-        
-        
-    }
-    
-    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdd;
     private javax.swing.JButton btnRemove;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable tblClass;
+    private javax.swing.JScrollPane jScrollPane1;
+    private com.julzz.groups.ui.components.NameTable tblClass;
     // End of variables declaration//GEN-END:variables
 }

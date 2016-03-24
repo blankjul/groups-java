@@ -8,10 +8,10 @@ import javax.swing.table.DefaultTableModel;
 
 public class Util {
 
-    public static String join(Collection<String> c, String delemiter) {
+    public static <T> String join(Collection<T> c, String delemiter) {
         StringBuilder builder = new StringBuilder();
-        for (String str : c) {
-            builder.append(str).append(delemiter);
+        for (T obj : c) {
+            builder.append(obj.toString()).append(delemiter);
         }
         return builder.toString();
     }

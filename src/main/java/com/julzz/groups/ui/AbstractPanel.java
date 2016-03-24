@@ -10,7 +10,7 @@ import javax.swing.JPanel;
 
 public class AbstractPanel extends JPanel {
     
-
+  
     public void initialize() {};
     
     public void save() {};

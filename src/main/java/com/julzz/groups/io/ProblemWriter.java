@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-public class ProblemWriter extends AWriter<ProblemBuilder> {
+public class ProblemWriter extends AWriter<Problem> {
 
     protected void write_(ProblemBuilder problem, OutputStream os) throws IOException {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();

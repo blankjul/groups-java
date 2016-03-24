@@ -5,7 +5,6 @@
  */
 package com.julzz.groups.ui.panels;
 
-import com.julzz.groups.io.ProblemWriter;
 import com.julzz.groups.model.GroupFactory;
 import com.julzz.groups.model.GroupVariable;
 import com.julzz.groups.model.Problem;
@@ -17,9 +16,6 @@ import com.msu.moo.operators.crossover.permutation.OrderedCrossover;
 import com.msu.moo.operators.mutation.SwapMutation;
 import com.msu.moo.util.Builder;
 import com.msu.moo.util.MyRandom;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 
 public class AlgorithmPanel extends AbstractPanel {
 
@@ -32,10 +28,8 @@ public class AlgorithmPanel extends AbstractPanel {
 
     @Override
     public void save() {
-        
-        Problem p = Storage.bProblem.build();
-        
-     
+
+        Problem p = new Problem(Storage.desc);
         
         Builder<SingleObjectiveEvolutionaryAlgorithm<GroupVariable, Problem>> ea = new Builder<>(SingleObjectiveEvolutionaryAlgorithm.class);
         ea
@@ -46,16 +40,11 @@ public class AlgorithmPanel extends AbstractPanel {
                 .set("mutation", new SwapMutation<>());
 
         SingleObjectiveEvolutionaryAlgorithm<GroupVariable, Problem> algorithm = ea.build();
-        
-         algorithm.run(p, new StandardEvaluator(Storage.evaluations), new MyRandom());
-         Storage.result = algorithm.getPopulation();
 
-         
-        
+        algorithm.run(p, new StandardEvaluator(Storage.evaluations), new MyRandom());
+        Storage.result = algorithm.getPopulation();
+
     }
-    
-    
-    
 
     /**
      * This method is called from within the constructor to initialize the form.

@@ -8,6 +8,7 @@ package com.julzz.groups.ui.panels;
 import com.julzz.groups.io.PlainObjectMember;
 import com.julzz.groups.model.GroupVariable;
 import com.julzz.groups.model.Member;
+import com.julzz.groups.model.Problem;
 import com.julzz.groups.model.ProblemUtil;
 import com.julzz.groups.ui.AbstractPanel;
 import com.julzz.groups.ui.Storage;
@@ -18,64 +19,52 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
-
 public class ResultPane extends AbstractPanel {
 
-    
     private static PlainObjectMember currentMember = null;
-    
+
     /**
      * Creates new form RelationPanel
      */
     public ResultPane() {
         initComponents();
-        
-      tblSolutions.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+
+        if (Storage.result == null) {
+            return;
+        }
+
+        DefaultTableModel model = (DefaultTableModel) tblSolutions.getModel();
+
+        for (int i = 0; i < Storage.result.size(); i++) {
+            model.addRow(new Object[]{String.format("Lösung %s -> %s", i + 1,  Storage.result.get(i).getObjectives().toString())});
+        }
+
+        tblSolutions.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             public void valueChanged(ListSelectionEvent event) {
+                
                 final int idx = tblSolutions.getSelectedRow();
                 Solution<GroupVariable> s = Storage.result.get(idx);
-                
-               
-                
+
                 StringBuilder sb = new StringBuilder();
-                
-               Collection<Set<Member>> groups =  ProblemUtil.getSubgroups(Storage.bProblem.getGroupLimits(), s.getVariable());
-       
-               int counter = 1;
+
+                Collection<Set<Member>> groups = ProblemUtil.getSubgroups(Storage.desc.getGroupLimits(), s.getVariable());
+
+                int counter = 1;
                 for (Set<Member> g : groups) {
                     sb.append("----------------\n");
                     sb.append(String.format("Gruppe %s\n", counter++));
                     sb.append("----------------\n");
-                    for(Member m : g) sb.append(m.getName() + "\n");
+                    for (Member m : g) {
+                        sb.append(m.getName() + "\n");
+                    }
                 }
-                
-                 txtResult.setText(sb.toString());
-                
+
+                txtResult.setText(sb.toString());
+
             }
         });
-        
+
     }
-    
-  
-
-    @Override
-    public void initialize() {
-        super.initialize();
-
-        
-        if (Storage.result == null) return;
-            
-        DefaultTableModel model = (DefaultTableModel) tblSolutions.getModel();
-        model.getDataVector().removeAllElements();
-        
-        for (int i = 0; i < Storage.result.size(); i++) {
-            model.addRow(new Object[] {String.format("Lösung %s", i+1)});
-        }
-           
-    }
-
-    
-    
 
     /**
      * This method is called from within the constructor to initialize the form.

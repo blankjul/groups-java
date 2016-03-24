@@ -6,6 +6,7 @@
 package com.julzz.groups.ui.panels;
 
 import com.julzz.groups.io.PlainObjectMember;
+import com.julzz.groups.model.Member;
 import com.julzz.groups.ui.AbstractPanel;
 import com.julzz.groups.ui.Storage;
 import javax.swing.DefaultCellEditor;
@@ -21,108 +22,28 @@ import javax.swing.table.TableColumn;
  */
 public class RelationPanel extends AbstractPanel {
 
-    
     private static PlainObjectMember currentMember = null;
-    
+
     /**
      * Creates new form RelationPanel
      */
     public RelationPanel() {
         initComponents();
-     
+        
         tblClass.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             public void valueChanged(ListSelectionEvent event) {
-
-                if (tblClass.getSelectedRow() > 0) {
-                    final String name = tblClass.getValueAt(tblClass.getSelectedRow(), 0).toString();
-                    updateRelations(name);
-                }
-                
+                final int idx = tblClass.getSelectedRow();
+                final Member m = tblClass.get(idx);
+                tblRelation.update(m);
+                //updateRelations(m.getName());
             }
         });
         
-    }
-    
-    @Override
-    public void initialize() {
-        DefaultTableModel model = (DefaultTableModel) tblClass.getModel();
-        model.getDataVector().removeAllElements();
-        for(PlainObjectMember m : Storage.bProblem.getMembers()) {
-            model.addRow(new Object[] {m.getName()});
-        }
-        
-  
-    }
-
-    @Override
-    public void save() {
-        super.save(); 
-        tblClass.clearSelection();
+        if (tblClass.getRowCount() > 0) tblClass.changeSelection(0, 0, false, false);
 
     }
-    
-    
-    
-     private void updateRelations(String student) {
 
-        if (currentMember != null) {
 
-            DefaultTableModel model = (DefaultTableModel) tblRelation.getModel();
-
-            currentMember.getPreferences().clear();
-            currentMember.getRejections().clear();
-
-            for (int i = 0; i < model.getRowCount(); i++) {
-
-                final String rel = (String) model.getValueAt(i, 0);
-                final String other = (String) model.getValueAt(i, 1);
-
-                if (rel.equals("ja")) {
-                    currentMember.getPreferences().add(other);
-                } else if (rel.equals("nein")) {
-                    currentMember.getRejections().add(other);
-                }
-
-            }
-
-        }
-
-        DefaultTableModel model = (DefaultTableModel) tblRelation.getModel();
-        for (int i = model.getRowCount() - 1; i >= 0; i--) {
-            model.removeRow(i);
-        }
-
-        PlainObjectMember member = Storage.bProblem.getMember(student);
-
-        for (PlainObjectMember other : Storage.bProblem.getMembers()) {
-
-            if (member.getName().equals(other.getName())) {
-                continue;
-            }
-            final boolean yes = member.getPreferences().contains(other.getName());
-            final boolean no = member.getRejections().contains(other.getName());
-
-            String s = "egal";
-            if (yes) {
-                s = "ja";
-            } else if (no) {
-                s = "nein";
-            }
-
-            model.addRow(new Object[]{s, other.getName()});
-        }
-
-        TableColumn cRelation = tblRelation.getColumn("Beziehung");
-        JComboBox comboBox = new JComboBox();
-        comboBox.addItem("egal");
-        comboBox.addItem("ja");
-        comboBox.addItem("nein");
-        cRelation.setCellEditor(new DefaultCellEditor(comboBox));
-
-        currentMember = member;
-
-    }
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -133,58 +54,13 @@ public class RelationPanel extends AbstractPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jScrollPane3 = new javax.swing.JScrollPane();
-        tblClass = new javax.swing.JTable();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblClass = new com.julzz.groups.ui.components.NameTable();
         jScrollPane2 = new javax.swing.JScrollPane();
-        tblRelation = new javax.swing.JTable();
+        tblRelation = new com.julzz.groups.ui.components.RelationTable();
 
-        tblClass.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
+        jScrollPane1.setViewportView(tblClass);
 
-            },
-            new String [] {
-                "Name"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        tblClass.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jScrollPane3.setViewportView(tblClass);
-
-        tblRelation.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "Beziehung", "Person"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.String.class
-            };
-            boolean[] canEdit = new boolean [] {
-                true, false
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        tblRelation.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                tblRelationFocusLost(evt);
-            }
-        });
         jScrollPane2.setViewportView(tblRelation);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -192,32 +68,28 @@ public class RelationPanel extends AbstractPanel {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(29, Short.MAX_VALUE)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(25, 25, 25)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 281, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(37, 37, 37)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 408, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addContainerGap(37, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(28, 28, 28)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 315, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 315, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(41, Short.MAX_VALUE))
+                .addGap(20, 20, 20)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 315, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .addContainerGap(59, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void tblRelationFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_tblRelationFocusLost
-
-    }//GEN-LAST:event_tblRelationFocusLost
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTable tblClass;
-    private javax.swing.JTable tblRelation;
+    private com.julzz.groups.ui.components.NameTable tblClass;
+    private com.julzz.groups.ui.components.RelationTable tblRelation;
     // End of variables declaration//GEN-END:variables
 }
