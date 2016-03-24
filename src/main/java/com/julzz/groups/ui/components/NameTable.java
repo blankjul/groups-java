@@ -14,21 +14,15 @@ import javax.swing.table.DefaultTableModel;
 
 public class NameTable extends JTable {
 
-    
-
     public NameTable() {
-        
         super();
- 
-       update(); 
-       
-
+        update();
     }
-    
+
     public Member get(int idx) {
         return (Member) getValueAt(idx, 0);
     }
-    
+
     public Set<Member> getSelected() {
         Set<Member> result = new HashSet<>();
         DefaultTableModel model = (DefaultTableModel) getModel();
@@ -38,24 +32,24 @@ public class NameTable extends JTable {
         }
         return result;
     }
-    
+
     public void update() {
         DefaultTableModel model = new DefaultTableModel() {
             @Override
             public boolean isCellEditable(int row, int column) {
-               return false;
+                return false;
             }
         };
         setModel(model);
-        
-        model.setColumnIdentifiers(new Object[] {"Name"});
 
-        for(Member m : Storage.desc.getMembers()) {
-            model.addRow(new Object[] {m});
+        model.setColumnIdentifiers(new Object[]{"Name"});
+
+        for (Member m : Storage.desc.getMembers()) {
+            model.addRow(new Object[]{m});
         }
 
         model.fireTableDataChanged();
-        
+
     }
 
 }

@@ -10,6 +10,7 @@ import com.julzz.groups.io.ProblemWriter;
 import com.julzz.groups.model.Problem;
 import com.julzz.groups.ui.panels.AlgorithmPanel;
 import com.julzz.groups.ui.panels.ConstraintPanel;
+import com.julzz.groups.ui.panels.GroupPanel;
 import com.julzz.groups.ui.panels.RelationPanel;
 import com.julzz.groups.ui.panels.ResultPane;
 import com.julzz.groups.ui.panels.NamePanel;
@@ -24,8 +25,8 @@ import javax.swing.JFileChooser;
 
 public class Main extends javax.swing.JFrame {
 
-    final private List<Class<?>> cPanels = Arrays.asList(NamePanel.class, ConstraintPanel.class, RelationPanel.class,
-            AlgorithmPanel.class, ResultPane.class);
+    final private List<Class<?>> cPanels = Arrays.asList(NamePanel.class, 
+            GroupPanel.class, ConstraintPanel.class, RelationPanel.class,AlgorithmPanel.class, ResultPane.class);
 
     private final int startPanel = 0;
 

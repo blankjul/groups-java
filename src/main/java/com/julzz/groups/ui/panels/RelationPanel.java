@@ -8,13 +8,8 @@ package com.julzz.groups.ui.panels;
 import com.julzz.groups.io.PlainObjectMember;
 import com.julzz.groups.model.Member;
 import com.julzz.groups.ui.AbstractPanel;
-import com.julzz.groups.ui.Storage;
-import javax.swing.DefaultCellEditor;
-import javax.swing.JComboBox;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumn;
 
 /**
  *
