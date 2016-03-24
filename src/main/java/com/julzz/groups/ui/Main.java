@@ -90,6 +90,7 @@ public class Main extends javax.swing.JFrame {
         jMenu2 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Smart Groups");
 
         btnNext.setText("Weiter");
         btnNext.addActionListener(new java.awt.event.ActionListener() {
@@ -139,6 +140,7 @@ public class Main extends javax.swing.JFrame {
         });
         jMenu1.add(mSave);
 
+        mClose.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Q, java.awt.event.InputEvent.CTRL_MASK));
         mClose.setText("Beenden");
         mClose.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

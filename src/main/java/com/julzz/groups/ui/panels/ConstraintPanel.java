@@ -8,10 +8,13 @@ package com.julzz.groups.ui.panels;
 import com.julzz.groups.model.Member;
 import com.julzz.groups.ui.AbstractPanel;
 import com.julzz.groups.ui.Storage;
-import com.julzz.groups.ui.Util;
+import java.awt.Color;
+import java.awt.Component;
 import java.util.Set;
+import javax.swing.JLabel;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-
 
 public class ConstraintPanel extends AbstractPanel {
 
@@ -20,8 +23,25 @@ public class ConstraintPanel extends AbstractPanel {
      */
     public ConstraintPanel() {
         initComponents();
+
+        tblGroups.getColumnModel().getColumn(0).setCellRenderer(new DefaultTableCellRenderer() {
+
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int col) {
+                
+                JLabel l = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, col);
+                if (row < Storage.desc.getInGroup().size()) l.setBackground(new Color(0, 204, 51));
+                else l.setBackground(new Color(255,153,204));
+
+                return l;
+            }
+
+        });
+
         update();
     }
+    
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -38,6 +58,7 @@ public class ConstraintPanel extends AbstractPanel {
         btnNotInGroup = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         tblClass = new com.julzz.groups.ui.components.NameTable();
+        btnRemove = new javax.swing.JButton();
 
         setMaximumSize(new java.awt.Dimension(473, 313));
         setMinimumSize(new java.awt.Dimension(473, 313));
@@ -61,7 +82,7 @@ public class ConstraintPanel extends AbstractPanel {
         });
         jScrollPane3.setViewportView(tblGroups);
 
-        btnInGroup.setText("unbedingt in einer Gruppe");
+        btnInGroup.setText("In einer Gruppe");
         btnInGroup.setToolTipText("");
         btnInGroup.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -69,7 +90,7 @@ public class ConstraintPanel extends AbstractPanel {
             }
         });
 
-        btnNotInGroup.setText("auf keinen Fall in einer Gruppe");
+        btnNotInGroup.setText("Nicht in einer Gruppe");
         btnNotInGroup.setToolTipText("");
         btnNotInGroup.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -79,6 +100,13 @@ public class ConstraintPanel extends AbstractPanel {
 
         jScrollPane2.setViewportView(tblClass);
 
+        btnRemove.setText("-");
+        btnRemove.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRemoveActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -87,34 +115,35 @@ public class ConstraintPanel extends AbstractPanel {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnInGroup, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnNotInGroup, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addContainerGap(380, Short.MAX_VALUE))
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(32, 32, 32)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 308, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnRemove, javax.swing.GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(390, Short.MAX_VALUE))))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(271, 271, 271)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 308, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(59, Short.MAX_VALUE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnInGroup, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnNotInGroup, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
-                .addComponent(btnInGroup)
-                .addGap(8, 8, 8)
-                .addComponent(btnNotInGroup)
-                .addContainerGap())
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(101, Short.MAX_VALUE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(124, 124, 124)
+                                .addComponent(btnRemove)))
+                        .addGap(18, 18, 18)
+                        .addComponent(btnInGroup)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnNotInGroup)
+                .addContainerGap(17, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -128,32 +157,44 @@ public class ConstraintPanel extends AbstractPanel {
 
     private void btnNotInGroupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNotInGroupActionPerformed
         Set<Member> group = tblClass.getSelected();
-        Storage.desc.getInGroup().add(group);
+        Storage.desc.getNotInGroup().add(group);
         tblClass.clearSelection();
         update();
     }//GEN-LAST:event_btnNotInGroupActionPerformed
 
+    private void btnRemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveActionPerformed
+        
+        for(int idx : tblGroups.getSelectedRows()) {
+            // is preference
+            if (idx < Storage.desc.getInGroup().size()) {
+                Storage.desc.getInGroup().remove(tblGroups.getModel().getValueAt(idx, 0));
+            }
+            else {
+                Storage.desc.getNotInGroup().remove(tblGroups.getModel().getValueAt(idx, 0));
+            }
+        }
+        
+        update();
+        
+    }//GEN-LAST:event_btnRemoveActionPerformed
 
-    
     private void update() {
         DefaultTableModel model = (DefaultTableModel) tblGroups.getModel();
-        for (int i = model.getRowCount() - 1; i >= 0; i--) {
-           model.removeRow(i);
-        }
+        model.setRowCount(0);
+
         for (Set<Member> group : Storage.desc.getInGroup()) {
-            final String line = "IN: " + Util.join(group, " | ");
-            model.addRow(new Object[] {line, true, group});
+            model.addRow(new Object[]{group});
         }
         for (Set<Member> group : Storage.desc.getNotInGroup()) {
-            final String line = "NICHT IN: " + Util.join(group, " | ");
-            model.addRow(new Object[] {line, false, group});
+            model.addRow(new Object[]{group});
         }
     }
-    
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnInGroup;
     private javax.swing.JButton btnNotInGroup;
+    private javax.swing.JButton btnRemove;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private com.julzz.groups.ui.components.NameTable tblClass;
