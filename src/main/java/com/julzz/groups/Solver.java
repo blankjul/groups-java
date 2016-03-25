@@ -1,9 +1,9 @@
 package com.julzz.groups;
 
 import com.julzz.groups.io.ProblemReader;
-import com.julzz.groups.model.GroupFactory;
 import com.julzz.groups.model.GroupVariable;
 import com.julzz.groups.model.Problem;
+import com.julzz.groups.recombination.GroupFactory;
 import com.msu.moo.algorithms.single.SingleObjectiveEvolutionaryAlgorithm;
 import com.msu.moo.model.evaluator.StandardEvaluator;
 import com.msu.moo.model.solution.SolutionSet;
@@ -31,7 +31,7 @@ public class Solver {
 		ea
 			.set("populationSize", populationSize)
 			.set("probMutation", 0.3)
-			.set("factory", new GroupFactory(problem))
+			.set("factory", new GroupFactory(problem.getDescription()))
 			.set("crossover", new OrderedCrossover<>())
 			.set("mutation", new SwapMutation<>());
 

@@ -5,9 +5,9 @@
  */
 package com.julzz.groups.ui.panels;
 
-import com.julzz.groups.model.GroupFactory;
 import com.julzz.groups.model.GroupVariable;
 import com.julzz.groups.model.Problem;
+import com.julzz.groups.recombination.GroupFactory;
 import com.julzz.groups.ui.AbstractPanel;
 import com.julzz.groups.ui.Storage;
 import com.msu.moo.algorithms.single.SingleObjectiveEvolutionaryAlgorithm;

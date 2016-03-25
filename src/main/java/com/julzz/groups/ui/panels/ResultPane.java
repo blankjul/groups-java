@@ -5,48 +5,48 @@
  */
 package com.julzz.groups.ui.panels;
 
-import com.julzz.groups.io.PlainObjectMember;
-import com.julzz.groups.model.GroupFactory;
+import java.util.Map;
+import java.util.Set;
+
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableModel;
+
+import com.julzz.groups.evaluator.PreferenceEvaluator;
+import com.julzz.groups.evaluator.RejectionEvaluator;
 import com.julzz.groups.model.GroupVariable;
 import com.julzz.groups.model.Member;
 import com.julzz.groups.model.Problem;
-import com.julzz.groups.model.ProblemUtil;
+import com.julzz.groups.recombination.GroupCrossover;
+import com.julzz.groups.recombination.GroupFactory;
+import com.julzz.groups.recombination.GroupMutation;
 import com.julzz.groups.ui.AbstractPanel;
 import com.julzz.groups.ui.Storage;
 import com.msu.moo.algorithms.single.SingleObjectiveEvolutionaryAlgorithm;
 import com.msu.moo.model.evaluator.StandardEvaluator;
 import com.msu.moo.model.solution.Solution;
-import com.msu.moo.operators.crossover.permutation.OrderedCrossover;
-import com.msu.moo.operators.mutation.SwapMutation;
 import com.msu.moo.util.Builder;
 import com.msu.moo.util.MyRandom;
-import java.util.Collection;
-import java.util.Set;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-import javax.swing.table.DefaultTableModel;
 
 public class ResultPane extends AbstractPanel {
 
-    private static PlainObjectMember currentMember = null;
 
-    /**
-     * Creates new form RelationPanel
-     */
+    
     public ResultPane() {
         initComponents();
 
         Problem p = new Problem(Storage.desc);
         
         Builder<SingleObjectiveEvolutionaryAlgorithm<GroupVariable, Problem>> ea = new Builder<>(SingleObjectiveEvolutionaryAlgorithm.class);
-        ea
-                .set("populationSize", Storage.population)
-                .set("probMutation", 0.3)
-                .set("factory", new GroupFactory(p))
-                .set("crossover", new OrderedCrossover<>())
-                .set("mutation", new SwapMutation<>());
-
-        SingleObjectiveEvolutionaryAlgorithm<GroupVariable, Problem> algorithm = ea.build();
+		ea
+			.set("populationSize", 100)
+			.set("probMutation", 0.3)
+			.set("factory", new GroupFactory(p.getDescription()))
+			.set("crossover", new GroupCrossover(p.getDescription()))
+			.set("mutation", new GroupMutation());
+		
+		
+        SingleObjectiveEvolutionaryAlgorithm<GroupVariable, Problem> algorithm = ea.buildNoClone();
 
         algorithm.run(p, new StandardEvaluator(Storage.evaluations), new MyRandom());
         Storage.result = algorithm.getPopulation();
@@ -56,7 +56,7 @@ public class ResultPane extends AbstractPanel {
         DefaultTableModel model = (DefaultTableModel) tblSolutions.getModel();
 
         for (int i = 0; i < Storage.result.size(); i++) {
-            model.addRow(new Object[]{String.format("Lösung %s -> %s", i + 1,  Storage.result.get(i).getObjectives().toString())});
+            model.addRow(new Object[]{String.format("Lösung %s -> %.2f", i + 1,  - Storage.result.get(i).getObjective(0))});
         }
 
         tblSolutions.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
@@ -67,7 +67,10 @@ public class ResultPane extends AbstractPanel {
 
                 StringBuilder sb = new StringBuilder();
 
-                Collection<Set<Member>> groups = ProblemUtil.getSubgroups(Storage.desc.getGroupLimits(), s.getVariable());
+                Set<Set<Member>> groups = s.getVariable().decode();
+                
+                Map<Member, Double> mPrefs = new PreferenceEvaluator().evaluate(s.getVariable(), p.getDescription());
+                Map<Member, Double> mRejs = new RejectionEvaluator().evaluate(s.getVariable(), p.getDescription());
 
                 int counter = 1;
                 for (Set<Member> g : groups) {
@@ -75,7 +78,7 @@ public class ResultPane extends AbstractPanel {
                     sb.append(String.format("Gruppe %s\n", counter++));
                     sb.append("----------------\n");
                     for (Member m : g) {
-                        sb.append(m.getName() + "\n");
+                        sb.append(String.format("%s [pref=%.2f, rejs=%.2f]\n", m.getName(), mPrefs.get(m), mRejs.get(m)));
                     }
                 }
 

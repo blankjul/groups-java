@@ -1,7 +1,7 @@
 {
   "groupLimits": [
     2,
-    2
+    3
   ],
   "members": [
     {
@@ -21,6 +21,11 @@
     },
     {
       "name": "Frank",
+      "preferences": [],
+      "rejections": []
+    },
+    {
+      "name": "Alex",
       "preferences": [],
       "rejections": []
     }

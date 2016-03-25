@@ -129,7 +129,7 @@ public class ProblemBuilder {
         Set<Set<Member>> objNotInOneGroup = createMemberSet(notInOneGroup, objMembers);
         Set<Set<Member>> objinOneGroup = createMemberSet(inOneGroup, objMembers);
 
-        return new Problem(new ProblemDescription(groupLimits, new ArrayList<>(objMembers.values()), objNotInOneGroup, objinOneGroup));
+        return new Problem(new ProblemDescription(groupLimits, new HashSet<>(objMembers.values()), objNotInOneGroup, objinOneGroup));
 
     }
 

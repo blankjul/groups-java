@@ -18,7 +18,6 @@ public class Member {
 	// rejects to be in a group with
 	Set<Member> rejections = new LinkedHashSet<>();
 
-	
 	public Member(String name) {
 		super();
 		this.name = name;
@@ -51,17 +50,18 @@ public class Member {
 	public Set<Member> getRejections() {
 		return rejections;
 	}
-        
-        public String getName() {
-            return name;
-        }
 
-	@Override
-	public String toString() {
+	public String getName() {
 		return name;
 	}
+
 	
+	@Override
+	public String toString() {
+		return String.format("%s", name, System.identityHashCode(this));
+	}
+
 	
-	
+
 
 }
