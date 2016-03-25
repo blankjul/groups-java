@@ -8,7 +8,7 @@ package com.julzz.groups.ui;
 import com.julzz.groups.io.ProblemReader;
 import com.julzz.groups.io.ProblemWriter;
 import com.julzz.groups.model.Problem;
-import com.julzz.groups.ui.panels.AlgorithmPanel;
+import com.julzz.groups.model.ProblemDescription;
 import com.julzz.groups.ui.panels.ConstraintPanel;
 import com.julzz.groups.ui.panels.GroupPanel;
 import com.julzz.groups.ui.panels.RelationPanel;
@@ -26,7 +26,7 @@ import javax.swing.JFileChooser;
 public class Main extends javax.swing.JFrame {
 
     final private List<Class<?>> cPanels = Arrays.asList(NamePanel.class, 
-            GroupPanel.class, ConstraintPanel.class, RelationPanel.class,AlgorithmPanel.class, ResultPane.class);
+            GroupPanel.class, ConstraintPanel.class, RelationPanel.class,ResultPane.class);
 
     private final int startPanel = 0;
 
@@ -85,6 +85,7 @@ public class Main extends javax.swing.JFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         mImport = new javax.swing.JMenuItem();
+        mReset = new javax.swing.JMenuItem();
         mSave = new javax.swing.JMenuItem();
         mClose = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
@@ -130,6 +131,15 @@ public class Main extends javax.swing.JFrame {
             }
         });
         jMenu1.add(mImport);
+
+        mReset.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.CTRL_MASK));
+        mReset.setText("Zurücksetzen");
+        mReset.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mResetActionPerformed(evt);
+            }
+        });
+        jMenu1.add(mReset);
 
         mSave.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
         mSave.setText("Speichern");
@@ -240,6 +250,11 @@ public class Main extends javax.swing.JFrame {
         System.exit(0);
     }//GEN-LAST:event_mCloseActionPerformed
 
+    private void mResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mResetActionPerformed
+        Storage.desc = new ProblemDescription();
+        loadPanel(startPanel);
+    }//GEN-LAST:event_mResetActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -283,6 +298,7 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem mClose;
     private javax.swing.JMenuItem mImport;
+    private javax.swing.JMenuItem mReset;
     private javax.swing.JMenuItem mSave;
     private javax.swing.JPanel pnlContainer;
     // End of variables declaration//GEN-END:variables

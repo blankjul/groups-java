@@ -10,9 +10,9 @@ import com.julzz.groups.ui.AbstractPanel;
 import com.julzz.groups.ui.Storage;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -101,7 +101,29 @@ public class NamePanel extends AbstractPanel {
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void btnRemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveActionPerformed
-        Storage.desc.getMembers().removeAll(tblClass.getSelected());
+        
+        Set<Member> selected = tblClass.getSelected();
+
+        Storage.desc.getMembers().removeAll(selected);
+        for(Member m : selected) {
+            m.getPreferences().removeAll(selected);
+            m.getRejections().removeAll(selected);
+            
+            if (m.getPreferences().size() == 1) m.getPreferences().clear();
+            if (m.getRejections().size() == 1) m.getPreferences().clear();
+            
+        }
+        
+ 
+        Storage.desc.getInGroup().forEach(g ->  g.removeAll(selected));
+        Storage.desc.getInGroup().removeIf(g -> g.size() < 2);
+        
+        
+        Storage.desc.getNotInGroup().forEach(g ->  g.removeAll(selected));
+        Storage.desc.getNotInGroup().removeIf(g -> g.size() < 2);
+        
+    
+        
         tblClass.update();
     }//GEN-LAST:event_btnRemoveActionPerformed
 

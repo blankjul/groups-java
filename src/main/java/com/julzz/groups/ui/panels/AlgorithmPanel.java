@@ -29,20 +29,7 @@ public class AlgorithmPanel extends AbstractPanel {
     @Override
     public void save() {
 
-        Problem p = new Problem(Storage.desc);
         
-        Builder<SingleObjectiveEvolutionaryAlgorithm<GroupVariable, Problem>> ea = new Builder<>(SingleObjectiveEvolutionaryAlgorithm.class);
-        ea
-                .set("populationSize", Storage.population)
-                .set("probMutation", 0.3)
-                .set("factory", new GroupFactory(p))
-                .set("crossover", new OrderedCrossover<>())
-                .set("mutation", new SwapMutation<>());
-
-        SingleObjectiveEvolutionaryAlgorithm<GroupVariable, Problem> algorithm = ea.build();
-
-        algorithm.run(p, new StandardEvaluator(Storage.evaluations), new MyRandom());
-        Storage.result = algorithm.getPopulation();
 
     }
 

@@ -6,13 +6,20 @@
 package com.julzz.groups.ui.panels;
 
 import com.julzz.groups.io.PlainObjectMember;
+import com.julzz.groups.model.GroupFactory;
 import com.julzz.groups.model.GroupVariable;
 import com.julzz.groups.model.Member;
 import com.julzz.groups.model.Problem;
 import com.julzz.groups.model.ProblemUtil;
 import com.julzz.groups.ui.AbstractPanel;
 import com.julzz.groups.ui.Storage;
+import com.msu.moo.algorithms.single.SingleObjectiveEvolutionaryAlgorithm;
+import com.msu.moo.model.evaluator.StandardEvaluator;
 import com.msu.moo.model.solution.Solution;
+import com.msu.moo.operators.crossover.permutation.OrderedCrossover;
+import com.msu.moo.operators.mutation.SwapMutation;
+import com.msu.moo.util.Builder;
+import com.msu.moo.util.MyRandom;
 import java.util.Collection;
 import java.util.Set;
 import javax.swing.event.ListSelectionEvent;
@@ -29,10 +36,23 @@ public class ResultPane extends AbstractPanel {
     public ResultPane() {
         initComponents();
 
-        if (Storage.result == null) {
-            return;
-        }
+        Problem p = new Problem(Storage.desc);
+        
+        Builder<SingleObjectiveEvolutionaryAlgorithm<GroupVariable, Problem>> ea = new Builder<>(SingleObjectiveEvolutionaryAlgorithm.class);
+        ea
+                .set("populationSize", Storage.population)
+                .set("probMutation", 0.3)
+                .set("factory", new GroupFactory(p))
+                .set("crossover", new OrderedCrossover<>())
+                .set("mutation", new SwapMutation<>());
 
+        SingleObjectiveEvolutionaryAlgorithm<GroupVariable, Problem> algorithm = ea.build();
+
+        algorithm.run(p, new StandardEvaluator(Storage.evaluations), new MyRandom());
+        Storage.result = algorithm.getPopulation();
+
+        
+        
         DefaultTableModel model = (DefaultTableModel) tblSolutions.getModel();
 
         for (int i = 0; i < Storage.result.size(); i++) {
