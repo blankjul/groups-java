@@ -96,21 +96,27 @@
     </Container>
     <Component class="javax.swing.JButton" name="btnInGroup">
       <Properties>
-        <Property name="text" type="java.lang.String" value="In einer Gruppe"/>
+        <Property name="text" type="java.lang.String" value="In a group"/>
         <Property name="toolTipText" type="java.lang.String" value=""/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnInGroupActionPerformed"/>
       </Events>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="btnInGroup.setText(Storage.bundle.getString(&quot;inGroup&quot;));"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JButton" name="btnNotInGroup">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Nicht in einer Gruppe"/>
+        <Property name="text" type="java.lang.String" value="Not in a group"/>
         <Property name="toolTipText" type="java.lang.String" value=""/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnNotInGroupActionPerformed"/>
       </Events>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="btnNotInGroup.setText(Storage.bundle.getString(&quot;notInGroup&quot;));"/>
+      </AuxValues>
     </Component>
     <Container class="javax.swing.JScrollPane" name="jScrollPane2">
       <AuxValues>

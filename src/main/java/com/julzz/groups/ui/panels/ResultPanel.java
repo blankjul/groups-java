@@ -28,11 +28,11 @@ import com.msu.moo.model.solution.Solution;
 import com.msu.moo.util.Builder;
 import com.msu.moo.util.MyRandom;
 
-public class ResultPane extends AbstractPanel {
+public class ResultPanel extends AbstractPanel {
 
 
     
-    public ResultPane() {
+    public ResultPanel() {
         initComponents();
 
         Problem p = new Problem(Storage.desc);
@@ -56,7 +56,7 @@ public class ResultPane extends AbstractPanel {
         DefaultTableModel model = (DefaultTableModel) tblSolutions.getModel();
 
         for (int i = 0; i < Storage.result.size(); i++) {
-            model.addRow(new Object[]{String.format("Lösung %s -> %.2f", i + 1,  - Storage.result.get(i).getObjective(0))});
+            model.addRow(new Object[]{String.format("%s %s -> %.2f", Storage.bundle.getString("solution"), i + 1,  - Storage.result.get(i).getObjective(0))});
         }
 
         tblSolutions.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
@@ -75,7 +75,7 @@ public class ResultPane extends AbstractPanel {
                 int counter = 1;
                 for (Set<Member> g : groups) {
                     sb.append("----------------\n");
-                    sb.append(String.format("Gruppe %s\n", counter++));
+                    sb.append(String.format("%s %s\n", Storage.bundle.getString("group"),counter++));
                     sb.append("----------------\n");
                     for (Member m : g) {
                         sb.append(String.format("%s [pref=%.2f, rejs=%.2f]\n", m.getName(), mPrefs.get(m), mRejs.get(m)));
@@ -87,6 +87,10 @@ public class ResultPane extends AbstractPanel {
             }
         });
 
+        
+        if (tblSolutions.getRowCount() > 0) {
+        	tblSolutions.changeSelection(0, 0, false, false);
+        }
     }
 
     /**

@@ -1,5 +1,6 @@
 package com.julzz.groups.ui;
 
+import com.julzz.groups.model.Member;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -16,21 +17,21 @@ public class Util {
         return builder.toString();
     }
 
-    public static List<String> getSelected(JTable tbl) {
+    public static List<Member> getSelected(JTable tbl, int col) {
         DefaultTableModel model = (DefaultTableModel) tbl.getModel();
-        List<String> group = new ArrayList<>();
+        List<Member> group = new ArrayList<>();
         for (int idx : tbl.getSelectedRows()) {
-            final String name = (String) model.getValueAt(idx, 0);
+            final Member name = (Member) model.getValueAt(idx, col);
             group.add(name);
         }
         return group;
     }
     
-    public static List<String> getAllFromTable(JTable tbl, int col) {
+    public static List<Member> getAllFromTable(JTable tbl, int col) {
         DefaultTableModel model = (DefaultTableModel) tbl.getModel();
-        List<String> group = new ArrayList<>();
+        List<Member> group = new ArrayList<>();
         for (int i = 0; i < model.getRowCount(); i++) {
-            final String name = (String) model.getValueAt(i, col);
+            final Member name = (Member) model.getValueAt(i, col);
             group.add(name);
         }
         return group;

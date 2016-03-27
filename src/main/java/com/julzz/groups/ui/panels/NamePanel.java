@@ -5,14 +5,14 @@
  */
 package com.julzz.groups.ui.panels;
 
+import java.util.Set;
+
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
 import com.julzz.groups.model.Member;
 import com.julzz.groups.ui.AbstractPanel;
 import com.julzz.groups.ui.Storage;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 
 /**
  *
@@ -87,7 +87,6 @@ public class NamePanel extends AbstractPanel {
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
         String name = JOptionPane.showInputDialog(new JFrame(), "Name:");
         if (name != null) {
-            List<Member> members = new ArrayList<>();
             if (name.contains(",")) {
                 for(String s : name.split(",")) {
                     Storage.desc.getMembers().add(new Member(s.trim()));
@@ -114,15 +113,6 @@ public class NamePanel extends AbstractPanel {
             
         }
         
- 
-        Storage.desc.getInGroup().forEach(g ->  g.removeAll(selected));
-        Storage.desc.getInGroup().removeIf(g -> g.size() < 2);
-        
-        
-        Storage.desc.getNotInGroup().forEach(g ->  g.removeAll(selected));
-        Storage.desc.getNotInGroup().removeIf(g -> g.size() < 2);
-        
-    
         
         tblClass.update();
     }//GEN-LAST:event_btnRemoveActionPerformed

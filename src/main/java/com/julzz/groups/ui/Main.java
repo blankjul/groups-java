@@ -5,15 +5,6 @@
  */
 package com.julzz.groups.ui;
 
-import com.julzz.groups.io.ProblemReader;
-import com.julzz.groups.io.ProblemWriter;
-import com.julzz.groups.model.Problem;
-import com.julzz.groups.model.ProblemDescription;
-import com.julzz.groups.ui.panels.ConstraintPanel;
-import com.julzz.groups.ui.panels.GroupPanel;
-import com.julzz.groups.ui.panels.RelationPanel;
-import com.julzz.groups.ui.panels.ResultPane;
-import com.julzz.groups.ui.panels.NamePanel;
 import java.awt.BorderLayout;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
@@ -21,12 +12,23 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.swing.JFileChooser;
+
+import com.julzz.groups.io.ProblemReader;
+import com.julzz.groups.io.ProblemWriter;
+import com.julzz.groups.model.Problem;
+import com.julzz.groups.model.ProblemDescription;
+import com.julzz.groups.ui.panels.ConstraintPanel;
+import com.julzz.groups.ui.panels.GroupPanel;
+import com.julzz.groups.ui.panels.NamePanel;
+import com.julzz.groups.ui.panels.RelationPanel;
+import com.julzz.groups.ui.panels.ResultPanel;
 
 public class Main extends javax.swing.JFrame {
 
     final private List<Class<?>> cPanels = Arrays.asList(NamePanel.class, 
-            GroupPanel.class, ConstraintPanel.class, RelationPanel.class,ResultPane.class);
+            GroupPanel.class, ConstraintPanel.class, RelationPanel.class,ResultPanel.class);
 
     private final int startPanel = 0;
 
@@ -39,7 +41,7 @@ public class Main extends javax.swing.JFrame {
         initComponents();
 
         //Storage.bProblem = new ProblemReader().read("/home/julesy/december2015.json");
-        Storage.desc = new ProblemReader().read("/home/julesy/december2015.json").build().getDescription();
+        //Storage.desc = new ProblemReader().read("/home/julesy/december2015.json").build().getDescription();
         
         setLayout(new BorderLayout());
         pnlContainer.setLayout(new BorderLayout());
@@ -61,13 +63,14 @@ public class Main extends javax.swing.JFrame {
 
 
     private void loadPanel(int idx) {
+        
         pnlContainer.removeAll();
         currentPanel = buildPanel(idx);
         pnlContainer.add(currentPanel);
 
-        this.getContentPane().invalidate();
-        this.getContentPane().validate();
-        this.getContentPane().repaint();
+        invalidate();
+        validate();
+        repaint();
     }
 
     /**
@@ -80,30 +83,30 @@ public class Main extends javax.swing.JFrame {
     private void initComponents() {
 
         btnNext = new javax.swing.JToggleButton();
-        btnLast = new javax.swing.JToggleButton();
+        btnBack = new javax.swing.JToggleButton();
         pnlContainer = new javax.swing.JPanel();
         jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
+        mFile = new javax.swing.JMenu();
         mImport = new javax.swing.JMenuItem();
         mReset = new javax.swing.JMenuItem();
         mSave = new javax.swing.JMenuItem();
-        mClose = new javax.swing.JMenuItem();
-        jMenu2 = new javax.swing.JMenu();
+        mQuit = new javax.swing.JMenuItem();
+        mAbout = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Smart Groups");
 
-        btnNext.setText("Weiter");
+        btnNext.setText("Next");
         btnNext.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnNextActionPerformed(evt);
             }
         });
 
-        btnLast.setText("Zurück");
-        btnLast.addActionListener(new java.awt.event.ActionListener() {
+        btnBack.setText("Back");
+        btnBack.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnLastActionPerformed(evt);
+                btnBackActionPerformed(evt);
             }
         });
 
@@ -121,48 +124,56 @@ public class Main extends javax.swing.JFrame {
             .addGap(0, 408, Short.MAX_VALUE)
         );
 
-        jMenu1.setText("Datei");
+        mFile.setText("File");
+        mFile.setText(Storage.bundle.getString("file"));
 
         mImport.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
-        mImport.setText("Öffnen");
+        mImport.setText("Import");
+        mImport.setText(Storage.bundle.getString("import"));
         mImport.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 mImportActionPerformed(evt);
             }
         });
-        jMenu1.add(mImport);
+        mFile.add(mImport);
 
         mReset.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.CTRL_MASK));
-        mReset.setText("Zurücksetzen");
+        mReset.setText("Reset");
+        mReset.setToolTipText("");
+        mReset.setText(Storage.bundle.getString("reset"));
         mReset.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 mResetActionPerformed(evt);
             }
         });
-        jMenu1.add(mReset);
+        mFile.add(mReset);
 
         mSave.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
-        mSave.setText("Speichern");
+        mSave.setText("Save");
+        mSave.setText(Storage.bundle.getString("save"));
         mSave.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 mSaveActionPerformed(evt);
             }
         });
-        jMenu1.add(mSave);
+        mFile.add(mSave);
 
-        mClose.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Q, java.awt.event.InputEvent.CTRL_MASK));
-        mClose.setText("Beenden");
-        mClose.addActionListener(new java.awt.event.ActionListener() {
+        mQuit.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Q, java.awt.event.InputEvent.CTRL_MASK));
+        mQuit.setText("Quit");
+        mQuit.setText(Storage.bundle.getString("quit"));
+        mQuit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mCloseActionPerformed(evt);
+                mQuitActionPerformed(evt);
             }
         });
-        jMenu1.add(mClose);
+        mFile.add(mQuit);
 
-        jMenuBar1.add(jMenu1);
+        jMenuBar1.add(mFile);
 
-        jMenu2.setText("Über");
-        jMenuBar1.add(jMenu2);
+        mAbout.setText("About");
+        mAbout.setToolTipText("");
+        mAbout.setText(Storage.bundle.getString("about"));
+        jMenuBar1.add(mAbout);
 
         setJMenuBar(jMenuBar1);
 
@@ -172,7 +183,7 @@ public class Main extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnLast)
+                .addComponent(btnBack)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnNext)
                 .addGap(28, 28, 28))
@@ -189,7 +200,7 @@ public class Main extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnNext)
-                    .addComponent(btnLast))
+                    .addComponent(btnBack))
                 .addGap(30, 30, 30))
         );
 
@@ -200,13 +211,13 @@ public class Main extends javax.swing.JFrame {
     private void updateButtons() {
 
         if (currentIdx == 0) {
-            btnLast.setEnabled(false);
+            btnBack.setEnabled(false);
             btnNext.setEnabled(true);
         } else if (currentIdx == cPanels.size() - 1) {
             btnNext.setEnabled(false);
-            btnLast.setEnabled(true);
+            btnBack.setEnabled(true);
         } else {
-            btnLast.setEnabled(true);
+            btnBack.setEnabled(true);
             btnNext.setEnabled(true);
         }
     }
@@ -220,12 +231,12 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_btnNextActionPerformed
 
 
-    private void btnLastActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLastActionPerformed
+    private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
         currentPanel.save();
         currentIdx--;
         loadPanel(currentIdx);
         updateButtons();
-    }//GEN-LAST:event_btnLastActionPerformed
+    }//GEN-LAST:event_btnBackActionPerformed
 
     private void mImportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mImportActionPerformed
         final JFileChooser fc = new JFileChooser();
@@ -246,9 +257,9 @@ public class Main extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_mSaveActionPerformed
 
-    private void mCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mCloseActionPerformed
+    private void mQuitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mQuitActionPerformed
         System.exit(0);
-    }//GEN-LAST:event_mCloseActionPerformed
+    }//GEN-LAST:event_mQuitActionPerformed
 
     private void mResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mResetActionPerformed
         Storage.desc = new ProblemDescription();
@@ -291,13 +302,13 @@ public class Main extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JToggleButton btnLast;
+    private javax.swing.JToggleButton btnBack;
     private javax.swing.JToggleButton btnNext;
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem mClose;
+    private javax.swing.JMenu mAbout;
+    private javax.swing.JMenu mFile;
     private javax.swing.JMenuItem mImport;
+    private javax.swing.JMenuItem mQuit;
     private javax.swing.JMenuItem mReset;
     private javax.swing.JMenuItem mSave;
     private javax.swing.JPanel pnlContainer;

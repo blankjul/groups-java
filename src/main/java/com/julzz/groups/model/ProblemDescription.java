@@ -1,5 +1,6 @@
 package com.julzz.groups.model;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -11,7 +12,7 @@ import java.util.Set;
 public class ProblemDescription {
 
 	// ! persons in a group for the final result
-	protected List<Integer> groupLimits;
+	protected List<Integer> groupLimits = new ArrayList<>();
 
 	// ! all members that exist in the search space
 	protected Set<Member> members = new HashSet<>();

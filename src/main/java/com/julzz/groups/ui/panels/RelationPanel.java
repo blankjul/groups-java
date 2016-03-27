@@ -10,6 +10,9 @@ import com.julzz.groups.model.Member;
 import com.julzz.groups.ui.AbstractPanel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -24,21 +27,30 @@ public class RelationPanel extends AbstractPanel {
      */
     public RelationPanel() {
         initComponents();
-        
+
         tblClass.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+
             public void valueChanged(ListSelectionEvent event) {
+
                 final int idx = tblClass.getSelectedRow();
                 final Member m = tblClass.get(idx);
                 tblRelation.update(m);
-                //updateRelations(m.getName());
             }
         });
-        
-        if (tblClass.getRowCount() > 0) tblClass.changeSelection(0, 0, false, false);
+
+        tblRelation.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+
+            }
+        });
+
+        if (tblClass.getRowCount() > 0) {
+            tblClass.changeSelection(0, 0, false, false);
+        }
 
     }
-
-
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -56,6 +68,16 @@ public class RelationPanel extends AbstractPanel {
 
         jScrollPane1.setViewportView(tblClass);
 
+        tblRelation.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                tblRelationMouseReleased(evt);
+            }
+        });
+        tblRelation.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                tblRelationPropertyChange(evt);
+            }
+        });
         jScrollPane2.setViewportView(tblRelation);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -79,6 +101,33 @@ public class RelationPanel extends AbstractPanel {
                 .addContainerGap(59, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void tblRelationPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_tblRelationPropertyChange
+
+
+    }//GEN-LAST:event_tblRelationPropertyChange
+
+    private void tblRelationMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblRelationMouseReleased
+        DefaultTableModel model = (DefaultTableModel) tblRelation.getModel();
+
+        for (Member m : tblClass.getSelected()) {
+
+            m.getPreferences().clear();
+            m.getRejections().clear();
+
+            for (int i = 0; i < model.getRowCount(); i++) {
+                final String sign = (String) model.getValueAt(i, 0);
+                final Member other = (Member) model.getValueAt(i, 1);
+
+                if (sign.equals("+")) {
+                    m.getPreferences().add(other);
+
+                } else if (sign.equals("-")) {
+                    m.getRejections().add(other);
+                }
+            }
+        }
+    }//GEN-LAST:event_tblRelationMouseReleased
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

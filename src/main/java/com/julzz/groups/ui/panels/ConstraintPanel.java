@@ -37,6 +37,7 @@ public class ConstraintPanel extends AbstractPanel {
             }
 
         });
+        
 
         update();
     }
@@ -82,16 +83,18 @@ public class ConstraintPanel extends AbstractPanel {
         });
         jScrollPane3.setViewportView(tblGroups);
 
-        btnInGroup.setText("In einer Gruppe");
+        btnInGroup.setText("In a group");
         btnInGroup.setToolTipText("");
+        btnInGroup.setText(Storage.bundle.getString("inGroup"));
         btnInGroup.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnInGroupActionPerformed(evt);
             }
         });
 
-        btnNotInGroup.setText("Nicht in einer Gruppe");
+        btnNotInGroup.setText("Not in a group");
         btnNotInGroup.setToolTipText("");
+        btnNotInGroup.setText(Storage.bundle.getString("notInGroup"));
         btnNotInGroup.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnNotInGroupActionPerformed(evt);

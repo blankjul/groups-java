@@ -21,6 +21,13 @@ public class Test {
     public static void main(String[] args) {
         Problem  problem = new ProblemReader().read("src/main/resources/small.json").build();
         
+        /*
+        problem.getDescription().getGroupLimits().clear();
+        for (int i = 0; i < problem.getDescription().getNumOfMembers(); i++) {
+			problem.getDescription().getGroupLimits().add(1);
+		}
+		*/
+        
         Builder<SingleObjectiveEvolutionaryAlgorithm<GroupVariable, Problem>> ea = new Builder<>(SingleObjectiveEvolutionaryAlgorithm.class);
 		ea
 			.set("populationSize", 100)
@@ -31,7 +38,7 @@ public class Test {
 
 		SingleObjectiveEvolutionaryAlgorithm<GroupVariable, Problem> algorithm = ea.buildNoClone();
 
-		algorithm.run(problem, new StandardEvaluator(10000), new MyRandom());
+		algorithm.run(problem, new StandardEvaluator(10000), new MyRandom(57686476));
         
 		System.out.println(algorithm.getPopulation().size());
 		System.out.println(algorithm.getPopulation());

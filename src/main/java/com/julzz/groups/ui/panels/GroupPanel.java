@@ -5,11 +5,8 @@
  */
 package com.julzz.groups.ui.panels;
 
-import com.julzz.groups.model.Member;
 import com.julzz.groups.ui.AbstractPanel;
 import com.julzz.groups.ui.Storage;
-import java.util.ArrayList;
-import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -107,19 +104,19 @@ public class GroupPanel extends AbstractPanel {
 
         int counter = 1;
         for (int num : Storage.desc.getGroupLimits()) {
-            model.addRow(new Object[]{String.format("Gruppe %s", counter++), num});
+            model.addRow(new Object[]{String.format("%s %s", Storage.bundle.getString("group"), counter++), num});
         }
 
         final int sum = Storage.desc.getGroupLimits().stream().mapToInt(i -> i.intValue()).sum();
-        model.addRow(new Object[]{"Nicht zugeteilt", Storage.desc.getMembers().size() - sum});
+        model.addRow(new Object[]{Storage.bundle.getString("notAssigned"), Storage.desc.getMembers().size() - sum});
         
-        
+     
 
     }
 
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
-        String strNum = JOptionPane.showInputDialog(new JFrame(), "Gruppe:");
+        String strNum = JOptionPane.showInputDialog(new JFrame(), String.format("%s:", Storage.bundle.getString("group")));
         if (strNum != null) {
 
             if (strNum.contains(",")) {

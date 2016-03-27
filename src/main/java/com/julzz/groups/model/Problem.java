@@ -49,7 +49,7 @@ public class Problem extends ASingleObjectiveProblem<GroupVariable> {
 			statistics.accept(satisfaction);		
 		}
 		
-		
+		//objectives.add(-statistics.getAverage());
 		objectives.add(-statistics.getSum());
 		//objectives.add(-statistics.getMin());
 		
