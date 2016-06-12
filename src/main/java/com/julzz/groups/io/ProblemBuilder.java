@@ -49,11 +49,7 @@ public class ProblemBuilder {
         return members.add(m);
     }
 
-    /**
-     * Add several member at once
-     *
-     * @param names list of names as string
-     */
+
     public void addMember(Collection<String> names) {
         for (String n : names) {
             addMember(n);
@@ -87,6 +83,7 @@ public class ProblemBuilder {
         return inOneGroup.add(new HashSet<String>(group));
     }
 
+    
     public Problem build() {
 
         final int sumOfGroups = groupLimits.stream().mapToInt(i -> i.intValue()).sum();
@@ -125,7 +122,7 @@ public class ProblemBuilder {
 
         }
 
-        // create mebers as objects for forbidden groups
+        // create members as objects for forbidden groups
         Set<Set<Member>> objNotInOneGroup = createMemberSet(notInOneGroup, objMembers);
         Set<Set<Member>> objinOneGroup = createMemberSet(inOneGroup, objMembers);
 

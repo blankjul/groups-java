@@ -1,4 +1,4 @@
-package com.julzz.groups.model;
+package com.julzz.groups.evolutionary;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -6,6 +6,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.julzz.groups.model.Member;
+import com.julzz.groups.model.ProblemDescription;
 import com.msu.moo.model.variable.Variable;
 
 /**
@@ -17,11 +19,10 @@ import com.msu.moo.model.variable.Variable;
  */
 public class GroupVariable extends Variable<Set<Set<Member>>> {
 
-
 	public GroupVariable(Set<Set<Member>> names) {
 		super(names);
 	}
-	
+
 	@Override
 	public GroupVariable copy() {
 		Set<Set<Member>> next = new HashSet<>();
@@ -30,16 +31,16 @@ public class GroupVariable extends Variable<Set<Set<Member>>> {
 		}
 		return new GroupVariable(next);
 	}
-	
-	
+
 	@Override
 	public GroupVariable build(Set<Set<Member>> obj) {
 		return new GroupVariable(obj);
 	}
-	
+
 	public Set<Member> getGroupOf(Member m) {
 		for (Set<Member> group : obj) {
-			if (group.contains(m)) return group;
+			if (group.contains(m))
+				return group;
 		}
 		return null;
 	}
@@ -57,11 +58,11 @@ public class GroupVariable extends Variable<Set<Set<Member>>> {
 
 	@Override
 	public int hashCode() {
-		
+
 		List<Integer> hashes = new ArrayList<>();
 		obj.forEach(group -> hashes.add(group.hashCode()));
 		Collections.sort(hashes);
-		
+
 		final int prime = 31;
 		int result = 0;
 		for (int n : hashes) {
@@ -69,29 +70,28 @@ public class GroupVariable extends Variable<Set<Set<Member>>> {
 		}
 		return result;
 	}
-	
-	
+
 	public boolean isValid(ProblemDescription desc) {
-		
+
 		// has duplicates
 		Set<Member> all = new HashSet<>();
 		obj.forEach(group -> group.forEach(m -> all.add(m)));
-	    if (desc.getNumOfMembers() != all.size()) return false;
-		
-	    // check if all groups with correct size do exist in variable
-	    List<Integer> groupsOrg = new ArrayList<>(desc.getGroupLimits());
-	    Collections.sort(groupsOrg);
-	    
-	    List<Integer> groupsCounts = new ArrayList<>();
-	    obj.forEach(group -> groupsCounts.add(group.size()));
-	    Collections.sort(groupsCounts);
-	    
-	    if (!groupsOrg.equals(groupsCounts)) return false;
-	    
-	    return true;
+		if (desc.getNumOfMembers() != all.size())
+			return false;
+
+		// check if all groups with correct size do exist in variable
+		List<Integer> groupsOrg = new ArrayList<>(desc.getGroupLimits());
+		Collections.sort(groupsOrg);
+
+		List<Integer> groupsCounts = new ArrayList<>();
+		obj.forEach(group -> groupsCounts.add(group.size()));
+		Collections.sort(groupsCounts);
+
+		if (!groupsOrg.equals(groupsCounts))
+			return false;
+
+		return true;
 	}
-	
-	
 
 	public String print() {
 		StringBuilder sb = new StringBuilder();
@@ -105,7 +105,5 @@ public class GroupVariable extends Variable<Set<Set<Member>>> {
 		}
 		return sb.toString();
 	}
-	
-
 
 }

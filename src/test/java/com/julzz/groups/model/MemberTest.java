@@ -1,13 +1,14 @@
+package com.julzz.groups.model;
 import java.util.HashSet;
 import java.util.Set;
 
 import org.junit.Test;
 
+import com.julzz.groups.evolutionary.GroupFactory;
+import com.julzz.groups.evolutionary.GroupVariable;
 import com.julzz.groups.io.ProblemReader;
-import com.julzz.groups.model.GroupVariable;
 import com.julzz.groups.model.Member;
 import com.julzz.groups.model.Problem;
-import com.julzz.groups.recombination.GroupFactory;
 import com.msu.moo.util.MyRandom;
 
 import junit.framework.TestCase;

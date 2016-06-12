@@ -14,42 +14,42 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 
-import com.julzz.groups.model.GroupVariable;
+import com.julzz.groups.evolutionary.GroupVariable;
+import com.julzz.groups.io.ProblemReader;
+import com.julzz.groups.model.Problem;
+import com.msu.moo.interfaces.ISolution;
 import com.msu.moo.model.solution.SolutionSet;
 
+/**
+ * The command line class which is responsible for parsing the arguments and
+ * perform the optimization.
+ *
+ */
 public class Exec {
 
 	public static void main(String[] args) throws ParseException, FileNotFoundException {
 
 		// create Options object
 		Options options = new Options();
-		
-		options.addOption(Option.builder("nameOfFile")
-				.required(false)
-				.hasArg()
+
+		options.addOption(Option.builder("nameOfFile").required(false).hasArg()
 				.desc("If the output should be printed to a file, provide here the path where the solutions should be saved.")
 				.build());
 
-		options.addOption(Option.builder("numberOfSolutions")
-				.required(false)
-				.hasArg()
+		options.addOption(Option.builder("numberOfSolutions").required(false).hasArg()
 				.desc("Number of solutions that should be present when the algorithm is finished. Could not be higher than numberOfPopulation.")
 				.build());
-		
-		options.addOption(Option.builder("numberOfPopulation").required(false)
-				.hasArg()
+
+		options.addOption(Option.builder("numberOfPopulation").required(false).hasArg()
 				.desc("Evolutionary algorithms use a population for their optimization process. This determines the number of inividuals for each generation. DEFAULT:100")
 				.build());
-		
-		
-		options.addOption(Option.builder("maxEvaluations").required(false)
-				.hasArg()
-				.desc("Maximal number of evaluations. DEFAULT: 100000")
-				.build());
-		
-		options.addOption("noDescription", false, "If set as argument, the description of each solution is not printed. This is an overview which preferences and rejections are fulfilled.");
-		
-		
+
+		options.addOption(Option.builder("maxEvaluations").required(false).hasArg()
+				.desc("Maximal number of evaluations. DEFAULT: 100000").build());
+
+		options.addOption("noDescription", false,
+				"If set as argument, the description of each solution is not printed. This is an overview which preferences and rejections are fulfilled.");
+
 		// create the parser
 		CommandLineParser parser = new DefaultParser();
 		CommandLine cmd = null;
@@ -64,44 +64,48 @@ public class Exec {
 			return;
 		}
 
-		Solver solver = new Solver();
-		
-		
+		Problem problem = null;
+		int numOfPopulation = 100;
+		int maxEvaluations = 100000;
+
 		try {
-			solver.setProblem(pathToFile);
+			problem = new ProblemReader().read(pathToFile).build();
 		} catch (Exception e) {
 			System.err.println("Could not find JSON file.");
 			return;
 		}
 
 		if (cmd.hasOption("numberOfPopulation")) {
-			solver.populationSize = Integer.valueOf(cmd.getOptionValue("numberOfPopulation"));
+			numOfPopulation = Integer.valueOf(cmd.getOptionValue("numberOfPopulation"));
 		}
-		
+
 		if (cmd.hasOption("maxEvaluations")) {
-			solver.maxEvaluations = Integer.valueOf(cmd.getOptionValue("maxEvaluations"));
+			maxEvaluations = Integer.valueOf(cmd.getOptionValue("maxEvaluations"));
 		}
-		
-		final boolean printDescription = !cmd.hasOption("noDescription");
-		
-		
-		SolutionSet<GroupVariable> set = solver.execute();
-		OutputStream os = (cmd.hasOption("nameOfFile")) ? new FileOutputStream(new File(cmd.getOptionValue("nameOfFile"))) : System.out;
+
+		// final boolean printDescription = !cmd.hasOption("noDescription");
+
+		SolutionSet<ISolution<GroupVariable>> set = Solver.solveWithEvolutionaryAlgorithm(problem, numOfPopulation,
+				maxEvaluations);
+
+		OutputStream os = (cmd.hasOption("nameOfFile"))
+				? new FileOutputStream(new File(cmd.getOptionValue("nameOfFile"))) : System.out;
 		PrintWriter pw = new PrintWriter(os);
-		
-		final int numberOfSolutions = (cmd.hasOption("numberOfSolutions")) ? Integer.valueOf(cmd.getOptionValue("numberOfSolutions")) : 1;
-		
+
+		final int numberOfSolutions = (cmd.hasOption("numberOfSolutions"))
+				? Integer.valueOf(cmd.getOptionValue("numberOfSolutions")) : 1;
+
 		for (int i = 0; i < numberOfSolutions && i < set.size(); i++) {
 			pw.println("-----------------------------------------------------------------------------");
-			pw.println(String.format("Solution %s", i+1));
+			pw.println(String.format("Solution %s", i + 1));
 			pw.println("-----------------------------------------------------------------------------");
 			GroupVariable var = set.get(i).getVariable();
-			//pw.println(var.print());
-			//if (printDescription) pw.println(var.report());
+			pw.println(var.print());
+			// (printDescription) pw.println(var.report());
 		}
 		pw.println();
 		pw.close();
-		
+
 	}
 
 }

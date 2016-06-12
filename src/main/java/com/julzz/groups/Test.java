@@ -5,13 +5,13 @@
  */
 package com.julzz.groups;
 
+import com.julzz.groups.evolutionary.GroupCrossover;
+import com.julzz.groups.evolutionary.GroupFactory;
+import com.julzz.groups.evolutionary.GroupMutation;
+import com.julzz.groups.evolutionary.GroupVariable;
 import com.julzz.groups.io.ProblemReader;
-import com.julzz.groups.model.GroupVariable;
 import com.julzz.groups.model.Problem;
-import com.julzz.groups.recombination.GroupCrossover;
-import com.julzz.groups.recombination.GroupFactory;
-import com.julzz.groups.recombination.GroupMutation;
-import com.msu.moo.algorithms.single.SingleObjectiveEvolutionaryAlgorithm;
+import com.msu.moo.algorithms.impl.single.SingleObjectiveEvolutionaryAlgorithm;
 import com.msu.moo.model.evaluator.StandardEvaluator;
 import com.msu.moo.util.Builder;
 import com.msu.moo.util.MyRandom;
@@ -19,7 +19,7 @@ import com.msu.moo.util.MyRandom;
 
 public class Test {
     public static void main(String[] args) {
-        Problem  problem = new ProblemReader().read("src/main/resources/small.json").build();
+        Problem  problem = new ProblemReader().read("src/main/resources/december2015.json").build();
         
         /*
         problem.getDescription().getGroupLimits().clear();

@@ -1,10 +1,10 @@
 package com.julzz.groups;
 
-import com.julzz.groups.io.ProblemReader;
-import com.julzz.groups.model.GroupVariable;
+import com.julzz.groups.evolutionary.GroupFactory;
+import com.julzz.groups.evolutionary.GroupVariable;
 import com.julzz.groups.model.Problem;
-import com.julzz.groups.recombination.GroupFactory;
-import com.msu.moo.algorithms.single.SingleObjectiveEvolutionaryAlgorithm;
+import com.msu.moo.algorithms.impl.single.SingleObjectiveEvolutionaryAlgorithm;
+import com.msu.moo.interfaces.ISolution;
 import com.msu.moo.model.evaluator.StandardEvaluator;
 import com.msu.moo.model.solution.SolutionSet;
 import com.msu.moo.operators.crossover.permutation.OrderedCrossover;
@@ -14,20 +14,12 @@ import com.msu.moo.util.MyRandom;
 
 public class Solver {
 
-	protected Problem problem;
+
 	
-	protected int populationSize = 100;
-	
-	protected int maxEvaluations = 100000;
-	
-	public void setProblem(String path) {
-		problem = new ProblemReader().read(path).build();
-	}
-	
-		
-	public SolutionSet<GroupVariable> execute() {
-		
-		Builder<SingleObjectiveEvolutionaryAlgorithm<GroupVariable, Problem>> ea = new Builder<SingleObjectiveEvolutionaryAlgorithm<GroupVariable, Problem>>(SingleObjectiveEvolutionaryAlgorithm.class);
+	public static SolutionSet<ISolution<GroupVariable>> solveWithEvolutionaryAlgorithm(Problem problem, int populationSize, int maxEvaluations) {
+
+		Builder<SingleObjectiveEvolutionaryAlgorithm<GroupVariable, Problem>> ea = new Builder<SingleObjectiveEvolutionaryAlgorithm<GroupVariable, Problem>>(
+				SingleObjectiveEvolutionaryAlgorithm.class);
 		ea
 			.set("populationSize", populationSize)
 			.set("probMutation", 0.3)
@@ -37,11 +29,15 @@ public class Solver {
 
 		SingleObjectiveEvolutionaryAlgorithm<GroupVariable, Problem> algorithm = ea.build();
 		algorithm.run(problem, new StandardEvaluator(maxEvaluations), new MyRandom());
-                return algorithm.getPopulation();
+		return algorithm.getPopulation();
+		
 	}
 	
+	public static SolutionSet<ISolution<GroupVariable>> solveWithHillClimbing(Problem problem, int maxEvaluations) {
+		return null;
+		
+	}
 	
-
 	
 
 }

@@ -4,6 +4,10 @@ import java.util.Set;
 
 import com.julzz.groups.model.Member;
 
+/**
+ * Evaluate the satisfaction of each member according to the avoided rejections.
+ * 
+ */
 public class RejectionEvaluator extends AbstractEvaluator
 {
 	

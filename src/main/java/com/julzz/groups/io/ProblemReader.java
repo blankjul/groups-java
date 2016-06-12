@@ -5,7 +5,6 @@ import java.io.IOException;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
-import com.julzz.groups.model.Member;
 import com.msu.moo.util.io.AReader;
 
 public class ProblemReader extends AReader<ProblemBuilder> {

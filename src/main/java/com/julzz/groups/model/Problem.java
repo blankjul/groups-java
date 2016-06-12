@@ -1,5 +1,6 @@
 package com.julzz.groups.model;
 
+import java.util.Collection;
 import java.util.DoubleSummaryStatistics;
 import java.util.List;
 import java.util.Map;
@@ -7,6 +8,7 @@ import java.util.Set;
 
 import com.julzz.groups.evaluator.PreferenceEvaluator;
 import com.julzz.groups.evaluator.RejectionEvaluator;
+import com.julzz.groups.evolutionary.GroupVariable;
 import com.msu.moo.model.ASingleObjectiveProblem;
 
 public class Problem extends ASingleObjectiveProblem<GroupVariable> {
@@ -34,11 +36,11 @@ public class Problem extends ASingleObjectiveProblem<GroupVariable> {
 		Set<Set<Member>> subgroups = var.decode();
 
 		// check for hard constraints
-		int violatedIsInGroup = desc.inOneGroup.size() - ProblemUtil.calcPresentSubsetGroups(subgroups, desc.inOneGroup);
-		int violatedNotInGroup = ProblemUtil.calcPresentSubsetGroups(subgroups, desc.notInOneGroup);
+		int violatedIsInGroup = desc.inOneGroup.size() - calcPresentSubsetGroups(subgroups, desc.inOneGroup);
+		int violatedNotInGroup = calcPresentSubsetGroups(subgroups, desc.notInOneGroup);
 		constraintViolations.add((double) violatedIsInGroup + violatedNotInGroup);
 		
-		// calculate preferences and rejections of each member
+		// calculate preferences and rejections satisfaction of each member
 		Map<Member, Double> prefs = new PreferenceEvaluator().evaluate(var, desc);
 		Map<Member, Double> rejs = new RejectionEvaluator().evaluate(var, desc);
 
@@ -56,7 +58,24 @@ public class Problem extends ASingleObjectiveProblem<GroupVariable> {
 	}
 	
 
+	public static int calcPresentSubsetGroups(Collection<Set<Member>> subgroups, Set<Set<Member>> subset) {
+		int counter = 0;
+		for (Set<Member> subsetGroup : subset) {
+			boolean isPresent = false;
+			for (Set<Member> group : subgroups) {
+				if (group.containsAll(subsetGroup)) {
+					isPresent = true;
+					break;
+				}
+			}
+			if (isPresent)
+				counter++;
+		}
+		return counter;
+	}
 
+	
+	
 	public ProblemDescription getDescription() {
 		return desc;
 	}

@@ -1,3 +1,4 @@
+package com.julzz.evolutionary;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -5,12 +6,12 @@ import java.util.Set;
 
 import org.junit.Test;
 
+import com.julzz.groups.evolutionary.GroupFactory;
+import com.julzz.groups.evolutionary.GroupMutation;
+import com.julzz.groups.evolutionary.GroupVariable;
 import com.julzz.groups.io.ProblemReader;
-import com.julzz.groups.model.GroupVariable;
 import com.julzz.groups.model.Member;
 import com.julzz.groups.model.Problem;
-import com.julzz.groups.recombination.GroupFactory;
-import com.julzz.groups.recombination.GroupMutation;
 import com.msu.moo.model.solution.Solution;
 import com.msu.moo.util.MyRandom;
 
@@ -26,7 +27,6 @@ public class GroupVariableTest extends TestCase {
 		super.setUp();
 		var = new GroupFactory(p.getDescription()).next(new MyRandom(123456));
 	}
-
 	
 	@Test
 	public void testEqualDifferentSetsSameContent() {

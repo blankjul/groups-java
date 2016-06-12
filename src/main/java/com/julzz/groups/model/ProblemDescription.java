@@ -2,6 +2,7 @@ package com.julzz.groups.model;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -15,7 +16,7 @@ public class ProblemDescription {
 	protected List<Integer> groupLimits = new ArrayList<>();
 
 	// ! all members that exist in the search space
-	protected Set<Member> members = new HashSet<>();
+	protected Set<Member> members = new LinkedHashSet<>();
 
 	// ! hard constraint which constellation in one group is not allowed
 	protected Set<Set<Member>> notInOneGroup = new HashSet<>();
@@ -28,7 +29,7 @@ public class ProblemDescription {
 		super();
 	}
 
-	
+		
 	public ProblemDescription(List<Integer> groupLimits, Set<Member> members, Set<Set<Member>> notInOneGroup, Set<Set<Member>> inOneGroup) {
 		super();
 		this.groupLimits = groupLimits;
