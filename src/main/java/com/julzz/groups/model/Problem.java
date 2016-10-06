@@ -47,7 +47,7 @@ public class Problem extends ASingleObjectiveProblem<GroupVariable> {
 		// calculate the individual satisfaction of each member
 		DoubleSummaryStatistics statistics = new DoubleSummaryStatistics();
 		for (Member m : desc.getMembers()) {
-			double satisfaction = prefs.get(m) + rejs.get(m);
+			double satisfaction = 2 * prefs.get(m) + rejs.get(m);
 			statistics.accept(satisfaction);		
 		}
 		

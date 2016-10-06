@@ -16,6 +16,7 @@ import org.apache.commons.cli.ParseException;
 
 import com.julzz.groups.evolutionary.GroupVariable;
 import com.julzz.groups.io.ProblemReader;
+import com.julzz.groups.io.Report;
 import com.julzz.groups.model.Problem;
 import com.msu.moo.interfaces.ISolution;
 import com.msu.moo.model.solution.SolutionSet;
@@ -83,7 +84,7 @@ public class Exec {
 			maxEvaluations = Integer.valueOf(cmd.getOptionValue("maxEvaluations"));
 		}
 
-		// final boolean printDescription = !cmd.hasOption("noDescription");
+		final boolean printDescription = !cmd.hasOption("noDescription");
 
 		SolutionSet<ISolution<GroupVariable>> set = Solver.solveWithEvolutionaryAlgorithm(problem, numOfPopulation,
 				maxEvaluations);
@@ -101,7 +102,7 @@ public class Exec {
 			pw.println("-----------------------------------------------------------------------------");
 			GroupVariable var = set.get(i).getVariable();
 			pw.println(var.print());
-			// (printDescription) pw.println(var.report());
+			if (printDescription) pw.println(Report.create(problem,var));
 		}
 		pw.println();
 		pw.close();

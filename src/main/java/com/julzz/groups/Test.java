@@ -10,8 +10,10 @@ import com.julzz.groups.evolutionary.GroupFactory;
 import com.julzz.groups.evolutionary.GroupMutation;
 import com.julzz.groups.evolutionary.GroupVariable;
 import com.julzz.groups.io.ProblemReader;
+import com.julzz.groups.io.Report;
 import com.julzz.groups.model.Problem;
 import com.msu.moo.algorithms.impl.single.SingleObjectiveEvolutionaryAlgorithm;
+import com.msu.moo.interfaces.ISolution;
 import com.msu.moo.model.evaluator.StandardEvaluator;
 import com.msu.moo.util.Builder;
 import com.msu.moo.util.MyRandom;
@@ -19,7 +21,7 @@ import com.msu.moo.util.MyRandom;
 
 public class Test {
     public static void main(String[] args) {
-        Problem  problem = new ProblemReader().read("src/main/resources/2016_oct_women.json").build();
+        Problem  problem = new ProblemReader().read("src/main/resources/2016_oct_men.json").build();
         
         /*
         problem.getDescription().getGroupLimits().clear();
@@ -41,7 +43,19 @@ public class Test {
 		algorithm.run(problem, new StandardEvaluator(10000), new MyRandom(57686476));
         
 		System.out.println(algorithm.getPopulation().size());
-		System.out.println(algorithm.getPopulation());
+		
+		for (int i = 0; i < 10; i++) {
+			ISolution<GroupVariable> s = algorithm.getPopulation().get(i);
+			System.out.println("-----------------------------------------");
+			System.out.println("Solution " + (i+1));
+			System.out.println("-----------------------------------------");
+			System.out.println("Groups: " + s.getVariable());
+			System.out.println(Report.create(problem, s.getVariable()));
+			System.out.println();
+		}
+		
+		
+		//System.out.println(algorithm.getPopulation());
 		
     }
 }
