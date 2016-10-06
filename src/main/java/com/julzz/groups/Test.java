@@ -19,7 +19,7 @@ import com.msu.moo.util.MyRandom;
 
 public class Test {
     public static void main(String[] args) {
-        Problem  problem = new ProblemReader().read("src/main/resources/december2015.json").build();
+        Problem  problem = new ProblemReader().read("src/main/resources/2016_oct_women.json").build();
         
         /*
         problem.getDescription().getGroupLimits().clear();

@@ -1,0 +1,96 @@
+{
+  "groupLimits": [4,4,4,4],
+  "members": [
+    {
+      "name": "Bünjamin Erol",
+      "preferences": ["Jurgis Pilibavicus", "Dennis Krentler", "Kevin Schwarz" ],
+      "rejections": ["Max Schneid", "Manuel Klement"]
+    },
+    {
+      "name": "Daniel Klassen",
+      "preferences": ["Jurgis Pilibavicus", "Bünjamin Erol", "Justin Swenson"],
+      "rejections": [ ]
+    },
+    {
+      "name": "Dennis Krentler",
+      "preferences" : ["Jurgis Pilibavicus", "Bünjamin Erol", "Kevin Schwarz"],
+      "rejections": [ "Max Schneid", "Manuel Klement"]
+    },
+    {
+      "name": "Jonas Herrmann",
+      "preferences": [ ],
+      "rejections": ["Bünjamin Erol", "Julian Alders"]
+    },
+    {
+      "name": "Julian Alders",
+      "preferences": ["Bünjamin Erol", "Dennis Krentler", "Sven Reuß", "Kevin Schwarz",	"Yannik Hedrich", "Manuel Klement"],
+      "rejections": ["Daniel Klassen", "Nils Grammig"]
+    },
+    {
+      "name": "Jurgis Pilibavicus",
+      "preferences": ["Bünjamin Erol", "Kevin Schwarz"],
+      "rejections": ["Konstantin Neumann", "Niklas Günther"]
+    },
+    {
+      "name": "Justin Swenson",
+      "preferences": ["Jurgis Pilibavicus",	"Bünjamin Erol", "Dennis Krentler", "Kevin Schwarz", "Steven Reuß"],
+      "rejections": ["Konstantin Neumann", "Niklas Günther"]
+    },
+    {
+      "name": "Kevin Schwarz",
+      "preferences": ["Jurgis Pilibavicus", "Bünjamin Erol", "Dennis Krentler" ],
+      "rejections": ["Konstantin Neumann", "Yannik Hedrich"]
+    },
+    {
+      "name": "Konstantin Neumann",
+      "preferences": ["Max Schneid", "Sven Reuß", "Yannik Hedrich"],
+      "rejections": ["Jonas Herrmann", "Dennis Krentler"]
+    },
+    {
+      "name": "Manuel Klement",
+      "preferences": [ ],
+      "rejections": ["Jonas Herrmann", "Julian Alders"]
+    },
+    {
+      "name": "Max Schneid",
+      "preferences": ["Jurgis Pilibavicus", "Yannik Hedrich", "Niklas Günther"],
+      "rejections": ["Jonas Herrmann", "Dennis Krentler"]
+    },
+    {
+      "name": "Niklas Günther",
+      "preferences": ["Max Schneid", "Jurgis Pilibavicus", "Bünjamin Erol", "Justin Swenson", "Kevin Schwarz"],
+      "rejections": ["Dennis Krentler"]
+    },
+    {
+      "name": "Nils Grammig",
+      "preferences": ["Julian Alders", "Niklas Günther", "Steven Reuß", "Daniel Klassen", "Manuel Klement"],
+      "rejections": ["Konstantin Neumann", "Yannik Hedrich"]
+    },
+    {
+      "name": "Steven Reuß",
+      "preferences": ["Max Schneid", "Jurgis Pilibavicus", "Bünjamin Erol", "Justin Swenson", "Kevin Schwarz"],
+      "rejections": ["Konstantin Neumann", "Niklas Günther"]
+    },
+    {
+      "name": "Sven Reuß",
+      "preferences": ["Kevin Schwarz", "Daniel Klassen"],
+      "rejections": ["Konstantin Neumann", "Yannik Hedrich"]
+    },
+    {
+      "name": "Yannik Hedrich",
+      "preferences": ["Max Schneid", "Konstantin Neumann", "Sven Reuß", "Niklas Günther", "Manuel Klement", "Nils Grammig"],
+      "rejections": ["Jurgis Pilibavicus", "Dennis Krentler"]
+    }
+  ],
+  "notInOneGroup": [
+    [
+      "Max Schneid", "Julian Alders", "Jonas Herrmann"
+    ]
+  ],
+  "inOneGroup": [
+    [
+      
+    ]
+  ]
+}
+

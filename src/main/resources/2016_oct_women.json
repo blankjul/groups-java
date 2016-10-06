@@ -1,0 +1,71 @@
+{
+  "groupLimits": [4,4,3],
+  "members": [
+    {
+      "name": "Celine Möller",
+      "preferences": [ ],
+      "rejections": ["Nathalie Müller-Hoh", "Jessica Kraus"]
+    },
+    {
+      "name": "Eva Rohde",
+      "preferences": [ ],
+      "rejections": ["Lara Wirsing"]
+    },
+    {
+      "name": "Jessica Kraus",
+      "preferences": ["Noelle Hartlaub", "Nathalie Müller-Hoh", "Eva Rohde", "Raffaela Sideridou", "Lena Bernhardt"],
+      "rejections": ["Lara Wirsing"]
+    },
+    {
+      "name": "Lara Wirsing",
+      "preferences": [ ],
+      "rejections": [ ]
+    },
+    {
+      "name": "Lena Bernhardt",
+      "preferences": [ ],
+      "rejections": [ ]
+    },
+    {
+      "name": "Melisa Cimendir",
+      "preferences": ["Noelle Hartlaub", "Michelle Schneider", "Nathalie Müller-Hoh", "Celine Möller", "Lena Bernhardt"],
+      "rejections": ["Jessica Kraus", "Raffaela Sideridou"]
+    },
+    {
+      "name": "Michelle Schneider",
+      "preferences": [ ],
+      "rejections": ["Celine Möller"]
+    },
+    {
+      "name": "Natalie Wischert",
+      "preferences": [ ],
+      "rejections": ["Nathalie Müller-Hoh", "Jessica Kraus"]
+    },
+    {
+      "name": "Nathalie Müller-Hoh",
+      "preferences": ["Michelle Schneider", "Melisa Cimendir", "Eva Rohde"],
+      "rejections": ["Natalie Wischert", "Raffaela Sideridou"]
+    },
+    {
+      "name": "Noelle Hartlaub",
+      "preferences": ["Michelle Schneider", "Lara Wirsing", "Melisa Cimendir", "Lena Bernhardt"],
+      "rejections": ["Nathalie Müller-Hoh", "Celine Möller"]
+    },
+    {
+      "name": "Raffaela Sideridou",
+      "preferences": [ ],
+      "rejections": [ ]
+    }
+  ],
+  "notInOneGroup": [
+    [
+      "Noelle Hartlaub", "Jessica Kraus", "Raffaela Sideridou"
+    ]
+  ],
+  "inOneGroup": [
+    [
+      
+    ]
+  ]
+}
+
